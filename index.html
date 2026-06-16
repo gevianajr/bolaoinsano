@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Bolão Regional Avaré — INSANOS MC</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1523,28 +1526,44 @@ async function initFirebase(){
     const db=firebase.database();
     _fbRef=db.ref(KEY);
 
-    // Carrega estado inicial do Firebase
     const snap=await _fbRef.get();
     if(snap.exists()){
+      // Firebase tem dados: usa como fonte de verdade
       _state=_migrar(snap.val());
+      console.log('[Firebase] Dados carregados do cloud.');
     } else {
-      _state=JSON.parse(JSON.stringify(INICIAL));
+      // Firebase vazio: migra do localStorage se houver dados, senão usa INICIAL
+      let origem='INICIAL';
+      try{
+        const localRaw=localStorage.getItem(KEY);
+        if(localRaw){
+          const localData=JSON.parse(localRaw);
+          // Só migra se tiver palpites ou configuração não-padrão
+          const temDados=(localData.palpites||[]).length>0
+                      || (localData.jogos||[]).length>1
+                      || localData.cfg?.mpLink!==MP_LINK_DEFAULT;
+          if(temDados){ _state=_migrar(localData); origem='localStorage (migração)'; }
+          else { _state=JSON.parse(JSON.stringify(INICIAL)); }
+        } else {
+          _state=JSON.parse(JSON.stringify(INICIAL));
+        }
+      } catch{ _state=JSON.parse(JSON.stringify(INICIAL)); }
       await _fbRef.set(_state);
+      console.log(`[Firebase] Banco inicializado a partir de: ${origem}`);
     }
     _fbOk=true;
 
-    // Listener em tempo real: atualiza UI quando outro device escreve
+    // Listener em tempo real: atualiza UI em todos os devices quando qualquer um salva
     _fbRef.on('value',(s)=>{
       if(!s.exists()) return;
       _state=s.val();
-      // Atualiza telas visíveis
       renderJogos(); renderPalpites(); stats(); updatePendBadge(); renderTransparencia();
       if(st.adm){ renderAdmJogos(); renderPalpAdmin(); syncResSelect(); }
     });
+    console.log('[Firebase] Listener em tempo real ativo.');
 
   } catch(err){
-    console.error('Firebase indisponível, usando localStorage.',err);
-    // Fallback: carrega do localStorage
+    console.error('[Firebase] Indisponível, usando localStorage como fallback.',err);
     try{
       const r=localStorage.getItem(KEY);
       _state=r ? _migrar(JSON.parse(r)) : JSON.parse(JSON.stringify(INICIAL));
