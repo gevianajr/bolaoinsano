@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolão Regional Avaré — INSANOS MC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   BOLÃO REGIONAL AVARÉ — INSANOS MC  ·  v3 FODA
+   Paleta: #080605 / dourado #c9a227 / fogo #e84b00
+   ═══════════════════════════════════════════════════ */
+:root{
+  --preto:       #080605;
+  --preto-card:  #0c0a07;
+  --preto-input: #080604;
+  --dourado:     #c9a227;
+  --dourado-cl:  #f0c030;
+  --dourado-esc: #6a4900;
+  --dourado-mid: #a07818;
+  --fogo:        #e84b00;
+  --fogo-cl:     #ff6b1a;
+  --prata:       #a8a8a8;
+  --prata-esc:   #555550;
+  --branco:      #f0ede8;
+  --borda:       #1e1b14;
+  --borda-ouro:  rgba(201,162,39,.22);
+  --verde-br:    #009c3b;
+  --amar-br:     #fedf00;
+  --azul-ht:     #00209f;
+  --verm-ht:     #d21034;
+  --grad-ouro:   linear-gradient(135deg,#6a4900,#f0c030,#6a4900);
+  --sombra:      0 8px 40px rgba(0,0,0,.9);
+  --r:           8px;
+  --f-disp:      'Black Ops One',sans-serif;
+  --f-tit:       'Oswald',sans-serif;
+  --f-body:      'Inter',sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--preto);
+  color:var(--branco);
+  font-family:var(--f-body);
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* ── GRAIN TEXTURE ── */
+body::after{
+  content:'';pointer-events:none;
+  position:fixed;inset:0;z-index:3;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.038'/%3E%3C/svg%3E");
+  opacity:.55;
+}
+
+/* ── CANVAS FAÍSCAS ── */
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.9}
+
+/* ── CONTAINER ── */
+.ctn{max-width:980px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
+section{padding:64px 0}
+
+/* ═══ NAVBAR ═══ */
+.nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(4,3,2,.97);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(201,162,39,.15);
+  padding:0 16px;
+}
+.nav::after{
+  content:'';display:block;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(232,75,0,.4) 30%,rgba(201,162,39,.6) 50%,rgba(232,75,0,.4) 70%,transparent);
+}
+.nav-in{
+  max-width:980px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;
+}
+.nav-marca{display:flex;align-items:center;gap:10px;cursor:pointer}
+.nav-logo{
+  width:36px;height:36px;border-radius:50%;
+  object-fit:cover;border:1.5px solid var(--dourado);
+  box-shadow:0 0 12px rgba(201,162,39,.4);
+}
+.nav-logo-fb{
+  width:36px;height:36px;border-radius:50%;
+  border:1.5px solid var(--dourado);
+  background:radial-gradient(circle,#130f00,#060402);
+  display:none;align-items:center;justify-content:center;
+}
+.nav-nome{
+  font-family:var(--f-tit);font-size:14px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--branco);line-height:1.2;
+}
+.nav-nome small{display:block;font-size:10px;color:var(--dourado);letter-spacing:2px}
+.nav-links{display:flex;gap:2px}
+.nav-btn{
+  padding:6px 11px;font-family:var(--f-tit);
+  font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--prata-esc);background:none;border:none;border-radius:6px;
+  cursor:pointer;transition:color .2s,background .2s;
+}
+.nav-btn:hover{color:var(--dourado);background:rgba(201,162,39,.08)}
+
+/* ═══ HERO ═══ */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:72px 16px 96px;position:relative;overflow:hidden;
+}
+
+/* Video background */
+.hero-vid{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:-2;opacity:.45;
+  filter:saturate(1.3) brightness(0.6);
+}
+.hero-ov{
+  position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 0%,rgba(232,75,0,.05) 0%,transparent 60%),
+    radial-gradient(ellipse 80% 80% at 50% 100%,rgba(201,162,39,.06) 0%,transparent 70%),
+    linear-gradient(180deg,rgba(8,6,5,.55) 0%,rgba(8,6,5,.3) 40%,rgba(8,6,5,.75) 100%);
+}
+
+/* Fire base at hero bottom */
+.hero-fire{
+  position:absolute;bottom:0;left:0;right:0;height:160px;
+  background:
+    radial-gradient(ellipse 35% 100% at 15% 100%,rgba(232,75,0,.22) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 100% at 50% 100%,rgba(201,162,39,.16) 0%,transparent 65%),
+    radial-gradient(ellipse 35% 100% at 85% 100%,rgba(232,75,0,.22) 0%,transparent 65%);
+  animation:firePulse 2.8s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+@keyframes firePulse{
+  0%{opacity:.7;transform:scaleY(.96)}
+  100%{opacity:1;transform:scaleY(1.04)}
+}
+.hero::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--fogo) 25%,var(--dourado-cl) 50%,var(--fogo) 75%,transparent);
+  animation:fireLine 3s ease-in-out infinite alternate;
+}
+@keyframes fireLine{
+  0%{opacity:.6;filter:blur(0px)}
+  100%{opacity:1;filter:blur(1px) brightness(1.3)}
+}
+
+/* Logo hero */
+.hero-logo-wrap{margin-bottom:28px;position:relative;display:inline-block}
+.hero-logo-img{
+  width:148px;height:148px;border-radius:50%;object-fit:cover;
+  border:2px solid var(--dourado);
+  box-shadow:0 0 0 5px rgba(201,162,39,.1),0 0 50px rgba(201,162,39,.45),0 0 100px rgba(232,75,0,.18);
+  animation:logoGlow 3s ease-in-out infinite alternate;
+}
+.hero-logo-fb{
+  width:148px;height:148px;border-radius:50%;
+  display:none;align-items:center;justify-content:center;
+  box-shadow:0 0 0 5px rgba(201,162,39,.1),0 0 50px rgba(201,162,39,.45),0 0 100px rgba(232,75,0,.18);
+  animation:logoGlow 3s ease-in-out infinite alternate;
+  margin:0 auto;overflow:hidden;
+}
+@keyframes logoGlow{
+  from{box-shadow:0 0 0 4px rgba(201,162,39,.08),0 0 30px rgba(201,162,39,.3),0 0 60px rgba(232,75,0,.1)}
+  to  {box-shadow:0 0 0 6px rgba(201,162,39,.2),0 0 70px rgba(201,162,39,.55),0 0 130px rgba(232,75,0,.25)}
+}
+
+/* Badge topo */
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 22px;
+  background:linear-gradient(135deg,#6a4900,#f0c030,#6a4900);
+  background-size:200% auto;
+  color:#000;font-family:var(--f-tit);font-size:10px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;border-radius:2px;
+  margin-bottom:20px;
+  animation:shimmer 3s linear infinite;
+}
+@keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
+
+/* Título — BOLÃO com efeito pedra/metal */
+.hero-h1{
+  font-family:var(--f-disp);
+  line-height:1.05;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.h1-bolao{
+  display:block;
+  font-size:clamp(58px,13vw,108px);
+  letter-spacing:3px;
+  background:linear-gradient(175deg,
+    #fff    0%,
+    #f0e0b0 6%,
+    #d4b060 13%,
+    #a07030 22%,
+    #604020 32%,
+    #3a2010 40%,
+    #604830 48%,
+    #907840 58%,
+    #c0a050 68%,
+    #eed080 78%,
+    #f8f0c0 86%,
+    #c0a050 93%,
+    #806020 100%
+  );
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:
+    drop-shadow(1px 2px 0 #000)
+    drop-shadow(2px 4px 0 rgba(0,0,0,.95))
+    drop-shadow(4px 7px 0 rgba(0,0,0,.85))
+    drop-shadow(6px 10px 0 rgba(0,0,0,.6))
+    drop-shadow(8px 14px 24px rgba(0,0,0,.5))
+    drop-shadow(0 0 60px rgba(232,75,0,.1));
+}
+.h1-regional{
+  display:block;
+  font-family:var(--f-tit);
+  font-size:clamp(14px,3.5vw,28px);
+  font-weight:700;letter-spacing:9px;
+  background:linear-gradient(135deg,#6a4900,#f0c030 35%,#f8e888 55%,#d4a017 75%,#6a4900);
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shimmer 4s linear infinite;
+}
+.h1-avare{
+  display:block;
+  font-size:clamp(36px,8.5vw,76px);
+  letter-spacing:5px;
+  color:var(--branco);
+  text-shadow:
+    2px 2px 0 rgba(0,0,0,.9),
+    4px 4px 0 rgba(0,0,0,.7),
+    0 0 40px rgba(232,75,0,.25);
+}
+
+/* Sub com chaves { } */
+.hero-sub{
+  font-family:var(--f-tit);font-size:clamp(12px,2.2vw,15px);font-weight:400;
+  letter-spacing:4px;text-transform:uppercase;color:var(--prata-esc);margin-bottom:24px;
+}
+.brk{
+  font-family:var(--f-disp);font-size:1.6em;line-height:0;
+  color:var(--fogo);vertical-align:middle;
+  filter:drop-shadow(0 0 6px rgba(232,75,0,.6));
+}
+
+/* Corrente ornamental no hero */
+.chain-orn{
+  width:min(400px,88vw);margin:0 auto 26px;
+  overflow:hidden;height:22px;
+}
+.chain-orn svg{display:block;width:100%;height:22px}
+
+.hero-slogan{
+  max-width:480px;font-size:14px;color:var(--prata-esc);
+  line-height:1.9;margin-bottom:40px;
+}
+.hero-slogan strong{color:var(--dourado)}
+
+/* Stats */
+.hero-stats{
+  display:flex;
+  border:1px solid rgba(201,162,39,.18);
+  border-radius:var(--r);overflow:hidden;margin-bottom:40px;
+  background:rgba(0,0,0,.4);backdrop-filter:blur(8px);
+}
+.h-stat{padding:14px 28px;text-align:center;flex:1}
+.h-stat+.h-stat{border-left:1px solid rgba(201,162,39,.12)}
+.h-stat-n{font-family:var(--f-disp);font-size:28px;color:var(--dourado);line-height:1}
+.h-stat-l{font-size:9px;color:var(--prata-esc);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+
+.btn-hero{
+  padding:18px 60px;font-family:var(--f-tit);font-size:18px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  background:linear-gradient(135deg,#6a4900,#f0c030,#6a4900);background-size:200% auto;
+  color:#000;border:none;border-radius:6px;cursor:pointer;
+  box-shadow:0 6px 30px rgba(201,162,39,.45),0 2px 0 rgba(0,0,0,.6),0 0 60px rgba(232,75,0,.15);
+  transition:transform .25s,box-shadow .25s;animation:shimmer 3s linear infinite;
+}
+.btn-hero:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 45px rgba(201,162,39,.65),0 2px 0 rgba(0,0,0,.6),0 0 80px rgba(232,75,0,.25);
+}
+
+/* ═══ SEPARADOR FOGO + CORRENTE ═══ */
+.sep-chain{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  padding:10px 0;z-index:1;
+  background:linear-gradient(90deg,transparent 0%,rgba(8,6,5,.8) 20%,rgba(8,6,5,.8) 80%,transparent 100%);
+}
+.sep-chain::before,.sep-chain::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--fogo) 30%,var(--dourado) 50%,var(--fogo) 70%,transparent);
+}
+.sep-chain-ico{
+  font-family:var(--f-disp);font-size:18px;color:var(--fogo);
+  padding:0 20px;
+  filter:drop-shadow(0 0 8px rgba(232,75,0,.7));
+  flex-shrink:0;
+}
+
+/* ═══ SEÇÃO GENÉRICA ═══ */
+.sec-h{
+  font-family:var(--f-tit);font-size:clamp(24px,5vw,38px);font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--branco);margin-bottom:6px;
+}
+.sec-h .hl{color:var(--dourado)}
+.sec-sub{font-size:13px;color:var(--prata-esc);margin-bottom:36px}
+
+/* ═══ CARD JOGO — borda metálica ═══ */
+.jogos-grid{display:grid;gap:24px}
+.card-jogo{
+  position:relative;border-radius:14px;
+  padding:2px;/* espaço para borda gradiente */
+  background:linear-gradient(135deg,
+    rgba(201,162,39,.5) 0%,
+    rgba(40,30,10,.8) 25%,
+    rgba(232,75,0,.3) 50%,
+    rgba(40,30,10,.8) 75%,
+    rgba(201,162,39,.5) 100%
+  );
+  box-shadow:var(--sombra),0 0 0 1px rgba(201,162,39,.08),inset 0 1px 0 rgba(201,162,39,.1);
+  transition:transform .3s,box-shadow .3s;
+  animation:borderShift 6s linear infinite;
+}
+@keyframes borderShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.card-jogo:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--sombra),0 0 40px rgba(201,162,39,.18),inset 0 1px 0 rgba(201,162,39,.15);
+}
+.card-jogo-inner{
+  background:var(--preto-card);
+  border-radius:13px;
+  padding:28px 24px;
+  position:relative;overflow:hidden;
+}
+.card-jogo-inner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--dourado-cl),transparent);
+}
+/* Chains nas laterais do card */
+.card-jogo-inner::after{
+  content:'';position:absolute;top:0;bottom:0;left:0;width:3px;
+  background:repeating-linear-gradient(
+    180deg,
+    rgba(201,162,39,.5) 0px,rgba(201,162,39,.5) 4px,
+    transparent 4px,transparent 8px
+  );
+}
+
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+
+/* Grupo tag */
+.grupo-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 12px;border:1px solid rgba(201,162,39,.3);
+  color:var(--dourado);font-family:var(--f-tit);
+  font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border-radius:3px;
+}
+.grupo-tag::before{content:'★';font-size:8px}
+
+/* Status */
+.s-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 13px;
+  border-radius:4px;font-family:var(--f-tit);
+  font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+}
+.s-aberto{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.35);color:#22c55e}
+.s-encerrado{background:rgba(232,75,0,.1);border:1px solid rgba(232,75,0,.35);color:var(--fogo-cl)}
+.s-finalizado{background:rgba(160,160,160,.08);border:1px solid rgba(160,160,160,.25);color:var(--prata-esc)}
+.s-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:dotPulse 1.8s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* Times no card */
+.card-times{display:flex;align-items:center;justify-content:center;gap:20px;margin:16px 0}
+.time-bloco{display:flex;flex-direction:column;align-items:center;gap:10px;flex:1}
+.time-escudo{
+  width:78px;height:86px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.time-escudo::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(160deg,#252010,#1a1500,#252010);
+  border:1px solid rgba(201,162,39,.25);border-radius:8px 8px 40% 40%;
+  clip-path:polygon(10% 0%,90% 0%,100% 30%,100% 70%,50% 100%,0% 70%,0% 30%);
+  box-shadow:0 0 20px rgba(201,162,39,.08);
+}
+.time-escudo::after{
+  content:'';position:absolute;inset:0;
+  border:1px solid rgba(232,75,0,.08);border-radius:8px 8px 40% 40%;
+  clip-path:polygon(10% 0%,90% 0%,100% 30%,100% 70%,50% 100%,0% 70%,0% 30%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+}
+.time-band{font-size:42px;line-height:1;position:relative;z-index:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))}
+.time-nome{
+  font-family:var(--f-tit);font-size:clamp(18px,4vw,26px);font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+}
+.t-brasil .time-nome{
+  background:linear-gradient(135deg,#00a83a,#fedf00);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 8px rgba(0,160,60,.2));
+}
+.t-brasil .time-escudo::before{background:linear-gradient(160deg,#0d2a10,#091a0a,#0d2a10)}
+.t-haiti  .time-nome{
+  background:linear-gradient(135deg,#0035d4,#e8001a);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.versus{text-align:center;flex-shrink:0}
+.versus-x{
+  font-family:var(--f-disp);font-size:clamp(28px,6vw,44px);
+  color:var(--dourado);line-height:1;
+  text-shadow:0 0 20px rgba(201,162,39,.5),0 0 60px rgba(232,75,0,.15);
+  filter:drop-shadow(0 2px 0 rgba(0,0,0,.8));
+}
+.versus-vs{font-size:9px;color:var(--prata-esc);letter-spacing:2px;text-transform:uppercase}
+
+/* Info chips */
+.card-infos{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0}
+.i-chip{
+  display:inline-flex;align-items:center;gap:5px;padding:5px 12px;
+  background:rgba(255,255,255,.025);border:1px solid var(--borda);
+  border-radius:20px;font-size:12px;color:#b8b4a8;
+}
+
+/* Placar oficial */
+.pl-of{text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--borda)}
+.pl-of-lbl{font-family:var(--f-tit);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--prata-esc);margin-bottom:4px}
+.pl-of-num{
+  font-family:var(--f-disp);font-size:52px;color:var(--dourado);line-height:1;
+  text-shadow:0 0 30px rgba(201,162,39,.5);
+}
+
+/* ═══ REGRAS ═══ */
+.regras-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.regra{
+  background:var(--preto-card);border-radius:var(--r);padding:22px;position:relative;
+  border:1px solid var(--borda);
+}
+.regra::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--fogo),var(--dourado),transparent);border-radius:2px 0 0 2px}
+.regra-n{font-family:var(--f-disp);font-size:52px;line-height:1;color:rgba(201,162,39,.12);margin-bottom:8px}
+.regra-t{font-size:14px;color:var(--prata-esc);line-height:1.65}
+.regra-t strong{color:var(--dourado)}
+
+/* ═══ FORM CARD ═══ */
+.form-card{
+  background:var(--preto-card);border:1px solid var(--borda-ouro);
+  border-radius:14px;padding:32px;position:relative;
+  box-shadow:0 4px 40px rgba(0,0,0,.6);
+}
+.form-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--fogo) 30%,var(--dourado) 50%,var(--fogo) 70%,transparent);
+}
+.f-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:14px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+label{font-family:var(--f-tit);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--prata-esc)}
+.req{color:var(--fogo);margin-left:1px}
+input,select,textarea{
+  width:100%;background:var(--preto-input);border:1px solid #1e1b10;
+  border-radius:var(--r);padding:12px 15px;color:var(--branco);
+  font-family:var(--f-body);font-size:15px;transition:border-color .25s,box-shadow .25s;
+  -webkit-appearance:none;
+}
+input:focus,select:focus{outline:none;border-color:rgba(201,162,39,.5);box-shadow:0 0 0 3px rgba(201,162,39,.1)}
+input::placeholder{color:var(--prata-esc);opacity:.4}
+select option{background:#0d0b07}
+input[type="number"]{-moz-appearance:textfield;text-align:center;font-family:var(--f-disp);font-size:28px;padding:10px 8px}
+input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none}
+.err{font-size:12px;color:var(--fogo);margin-top:2px;display:none}
+.err.v{display:block}
+
+/* Placar duplo */
+.pl-form{display:grid;grid-template-columns:1fr 36px 1fr;align-items:end;gap:8px}
+.pl-form-x{text-align:center;font-family:var(--f-disp);font-size:24px;color:var(--dourado);padding-bottom:10px}
+.pl-lbl{font-family:var(--f-tit);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--prata-esc);text-align:center;margin-bottom:4px}
+
+/* Alertas */
+.alerta{padding:13px 16px;border-radius:var(--r);margin-bottom:16px;display:none;gap:10px;align-items:flex-start;font-size:14px}
+.alerta.v{display:flex}
+.a-ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);color:#22c55e}
+.a-err{background:rgba(232,75,0,.08);border:1px solid rgba(232,75,0,.3);color:var(--fogo-cl)}
+.a-info{background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.3);color:var(--dourado)}
+.a-ico{font-size:18px;flex-shrink:0;margin-top:1px}
+.a-body strong{display:block;margin-bottom:2px}
+
+/* ═══ BOTÕES ═══ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:12px 26px;border:none;border-radius:6px;
+  font-family:var(--f-tit);font-size:12px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .25s;
+  text-decoration:none;
+}
+.btn-ouro{
+  background:linear-gradient(135deg,#6a4900,#f0c030,#6a4900);background-size:200% auto;
+  color:#000;box-shadow:0 4px 20px rgba(201,162,39,.3);animation:shimmer 3s linear infinite;
+}
+.btn-ouro:hover{transform:translateY(-1px);box-shadow:0 6px 30px rgba(201,162,39,.55)}
+.btn-out{background:transparent;border:1px solid rgba(201,162,39,.4);color:var(--dourado)}
+.btn-out:hover{background:rgba(201,162,39,.08)}
+.btn-ghost{background:rgba(255,255,255,.04);border:1px solid var(--borda);color:var(--prata-esc)}
+.btn-ghost:hover{background:rgba(255,255,255,.08);color:var(--branco)}
+.btn-danger{background:rgba(232,75,0,.1);border:1px solid rgba(232,75,0,.3);color:var(--fogo-cl)}
+.btn-danger:hover{background:rgba(232,75,0,.2)}
+.btn-sm{padding:7px 16px;font-size:9px;letter-spacing:1.5px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+
+/* ═══ PALPITES ═══ */
+.pal-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.pal-lista{display:grid;gap:9px}
+.pal-card{
+  background:var(--preto-card);border:1px solid var(--borda);
+  border-radius:var(--r);padding:13px 17px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  transition:border-color .25s;animation:fadeUp .3s ease both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pal-card:hover{border-color:#2a2418}
+.pal-card.venc{
+  border-color:rgba(201,162,39,.4);
+  background:rgba(201,162,39,.03);
+  box-shadow:0 0 20px rgba(201,162,39,.08);
+}
+.pal-info{flex:1;min-width:100px}
+.pal-nome{font-family:var(--f-tit);font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.pal-jogo{font-size:11px;color:var(--prata-esc);margin-top:2px}
+.pal-pl{font-family:var(--f-disp);font-size:22px;color:var(--dourado);white-space:nowrap;flex-shrink:0}
+.pal-dt{font-size:10px;color:var(--prata-esc);text-align:right;min-width:72px}
+.venc-tag{
+  display:inline-flex;align-items:center;gap:3px;padding:2px 7px;
+  background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.4);
+  border-radius:3px;font-family:var(--f-tit);font-size:9px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--dourado);
+}
+.pal-oculto{text-align:center;padding:48px 16px;color:var(--prata-esc);font-size:13px;display:none}
+.pal-oculto.v{display:block}
+.empty-st{text-align:center;padding:48px 16px;color:var(--prata-esc)}
+.empty-ico{font-size:48px;margin-bottom:14px;opacity:.3}
+
+/* ═══ ADMIN ═══ */
+.adm-login-w{max-width:400px;margin:0 auto}
+.tabs{display:flex;border-bottom:1px solid #1a1710;margin-bottom:26px;overflow-x:auto}
+.tab{
+  padding:11px 17px;font-family:var(--f-tit);font-size:10px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--prata-esc);cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;
+  background:none;border-top:none;border-left:none;border-right:none;
+}
+.tab.on{color:var(--dourado);border-bottom-color:var(--dourado)}
+.tab:hover:not(.on){color:var(--branco)}
+.tab-pane{display:none}
+.tab-pane.on{display:block}
+.adm-sec{
+  font-family:var(--f-tit);font-size:10px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--dourado);
+  padding-bottom:8px;border-bottom:1px solid var(--borda);margin-bottom:16px;
+}
+
+/* Tabela admin */
+.t-w{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{
+  font-family:var(--f-tit);font-size:9px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--prata-esc);
+  padding:10px 11px;text-align:left;border-bottom:1px solid #1a1710;white-space:nowrap;
+}
+td{padding:11px 11px;border-bottom:1px solid #0e0c08;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.012)}
+
+/* Resultado destaque */
+.res-dest{
+  text-align:center;padding:40px 24px;
+  background:rgba(201,162,39,.04);border:1px solid rgba(201,162,39,.2);
+  border-radius:14px;margin:14px 0;
+}
+.res-trofeu{font-size:72px;line-height:1;margin-bottom:14px}
+.res-nome{
+  font-family:var(--f-disp);font-size:clamp(28px,6vw,48px);
+  color:var(--dourado);text-transform:uppercase;letter-spacing:2px;
+  text-shadow:0 0 30px rgba(201,162,39,.4);
+}
+.res-sub{color:var(--prata-esc);font-size:13px;margin-top:8px}
+
+/* ═══ MODAL ═══ */
+.modal-ov{
+  position:fixed;inset:0;background:rgba(0,0,0,.92);
+  display:flex;align-items:center;justify-content:center;
+  z-index:500;padding:16px;backdrop-filter:blur(8px);
+}
+.modal-ov.off{display:none}
+.modal-box{
+  background:var(--preto-card);border:1px solid rgba(201,162,39,.2);border-radius:14px;
+  padding:32px;max-width:440px;width:100%;position:relative;
+  max-height:90vh;overflow-y:auto;
+  box-shadow:0 20px 80px rgba(0,0,0,.8);
+}
+.modal-h{font-family:var(--f-tit);font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.modal-s{color:var(--prata-esc);font-size:13px;margin-bottom:22px}
+.modal-x{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--prata-esc);font-size:18px;cursor:pointer;padding:6px 10px;border-radius:4px;transition:all .2s}
+.modal-x:hover{color:var(--branco);background:rgba(255,255,255,.08)}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex-wrap:wrap}
+
+/* ═══ FOOTER ═══ */
+footer{
+  text-align:center;padding:40px 16px;
+  border-top:1px solid var(--borda);
+  color:var(--prata-esc);font-size:12px;position:relative;z-index:1;
+  background:linear-gradient(0deg,rgba(232,75,0,.03),transparent);
+}
+footer strong{color:var(--dourado)}
+.footer-logo{width:48px;height:48px;border-radius:50%;border:1px solid rgba(201,162,39,.3);margin:0 auto 12px;display:block;opacity:.7}
+.footer-logo-fb{
+  width:48px;height:48px;border-radius:50%;border:1px solid rgba(201,162,39,.3);
+  margin:0 auto 12px;display:none;align-items:center;justify-content:center;opacity:.7;
+}
+
+/* ═══ PAGAMENTO ═══ */
+.btn-mp{
+  display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  padding:16px 24px;border:none;border-radius:8px;cursor:pointer;
+  background:linear-gradient(135deg,#009ee3,#0075c4);
+  color:#fff;font-family:var(--f-tit);font-size:16px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;
+  box-shadow:0 4px 24px rgba(0,120,220,.35);transition:all .25s;
+}
+.btn-mp:hover{transform:translateY(-2px);box-shadow:0 6px 32px rgba(0,120,220,.55)}
+
+.pay-step{
+  border-top:1px solid var(--borda-ouro);padding-top:22px;margin-top:8px;
+}
+.pay-resume{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  background:rgba(0,0,0,.3);border:1px solid rgba(201,162,39,.2);
+  border-radius:8px;padding:14px 16px;margin-bottom:20px;
+}
+.pay-resume-info{}
+.pay-resume-nome{font-family:var(--f-tit);font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:1px}
+.pay-resume-jogo{font-size:12px;color:var(--prata-esc);margin-top:2px}
+.pay-resume-pl{font-family:var(--f-disp);font-size:26px;color:var(--dourado);flex-shrink:0;text-shadow:0 0 20px rgba(201,162,39,.4)}
+
+.pay-val-block{text-align:center;padding:14px 0 10px}
+.pay-val{font-family:var(--f-disp);font-size:54px;color:var(--dourado);line-height:1;text-shadow:0 0 30px rgba(201,162,39,.4)}
+.pay-val-desc{font-family:var(--f-tit);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--prata-esc);margin-top:3px}
+
+.pay-url-row{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(0,0,0,.3);border:1px solid var(--borda);border-radius:6px;
+  padding:8px 12px;margin-top:10px;
+}
+.pay-url-txt{font-size:11px;color:var(--prata-esc);flex:1;word-break:break-all;font-family:monospace}
+.pay-copy-btn{background:none;border:none;color:var(--dourado);cursor:pointer;font-size:16px;padding:2px 6px;flex-shrink:0;transition:color .2s}
+.pay-copy-btn:hover{color:var(--dourado-cl)}
+
+.pay-obs{font-size:13px;color:var(--prata-esc);line-height:1.7;text-align:center;padding:0 4px}
+
+.s-pendente{background:rgba(230,140,0,.1);border:1px solid rgba(230,140,0,.35);color:#f0a020}
+.tab-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--fogo);color:#fff;font-size:9px;font-weight:700;
+  border-radius:10px;padding:1px 6px;margin-left:5px;min-width:16px;vertical-align:middle;
+}
+
+/* ═══ UTILS ═══ */
+.hidden{display:none!important}
+.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mt-20{margin-top:20px}.mt-24{margin-top:24px}
+.mb-16{margin-bottom:16px}.mb-20{margin-bottom:20px}.mb-24{margin-bottom:24px}
+.flex{display:flex}.flex-c{display:flex;align-items:center}.flex-bw{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.gap-8{gap:8px}.gap-12{gap:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tc{text-align:center}
+
+/* ═══ RESPONSIVO ═══ */
+@media(max-width:640px){
+  section{padding:44px 0}
+  .card-jogo-inner,.form-card,.modal-box{padding:18px 14px}
+  .nav-btn{padding:5px 7px;font-size:9px}
+  .pal-dt{display:none}
+  .pal-card{gap:10px}
+  .g2,.g3{grid-template-columns:1fr}
+  .hero-stats{flex-direction:column;border:1px solid rgba(201,162,39,.12);gap:0}
+  .h-stat+.h-stat{border-left:none;border-top:1px solid rgba(201,162,39,.08)}
+  .h-stat{padding:12px 20px}
+  .time-escudo{width:60px;height:66px}
+  .time-band{font-size:32px}
+  .chain-orn{display:none}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<!-- ════════ NAVBAR ════════ -->
+<nav class="nav">
+  <div class="nav-in">
+    <div class="nav-marca" onclick="ir('#hero')">
+      <img src="assets/logo-regional-avare.png" alt="Logo" class="nav-logo"
+           onerror="this.style.display='none';document.getElementById('nlf').style.display='flex'">
+      <div class="nav-logo-fb" id="nlf">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36">
+          <circle cx="18" cy="18" r="17" fill="#0d0a02"/>
+          <circle cx="18" cy="18" r="16" fill="none" stroke="#c9a227" stroke-width="1"/>
+          <text x="18" y="23" font-family="sans-serif" font-size="14" fill="#e84b00" text-anchor="middle">☠</text>
+        </svg>
+      </div>
+      <div class="nav-nome">
+        Bolão Regional
+        <small>INSANOS MC · AVARÉ/SP</small>
+      </div>
+    </div>
+    <div class="nav-links">
+      <button class="nav-btn" onclick="ir('#jogos')">Jogos</button>
+      <button class="nav-btn" onclick="ir('#palpite')">Palpitar</button>
+      <button class="nav-btn" onclick="ir('#palpites')">Placar</button>
+      <button class="nav-btn" onclick="ir('#admin')">⚙</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero" id="hero">
+
+  <!-- Vídeo de fundo -->
+  <video class="hero-vid" autoplay muted loop playsinline>
+    <source src="assets/vinheta.mp4" type="video/mp4">
+  </video>
+  <div class="hero-ov"></div>
+
+  <!-- Logo -->
+  <div class="hero-logo-wrap">
+    <img src="assets/logo-regional-avare.png" alt="INSANOS MC Regional Avaré" class="hero-logo-img"
+         onerror="this.style.display='none';document.getElementById('hlf').style.display='flex'">
+    <div class="hero-logo-fb" id="hlf">
+      <!-- SVG Badge: INSANOS MC circular logo -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" width="148" height="148">
+        <defs>
+          <filter id="eye-gl" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="3.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="fire-gl" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="6" result="b"/>
+            <feColorMatrix in="b" type="matrix" values="1.2 0.4 0 0 0  0.3 0 0 0 0  0 0 0 0 0  0 0 0 0.7 0" result="o"/>
+            <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <radialGradient id="bg-c" cx="50%" cy="55%" r="52%">
+            <stop offset="0%" stop-color="#1a0f00"/>
+            <stop offset="100%" stop-color="#060402"/>
+          </radialGradient>
+          <radialGradient id="skull-c" cx="38%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ede0c0"/>
+            <stop offset="100%" stop-color="#b09060"/>
+          </radialGradient>
+          <radialGradient id="fire-c" cx="50%" cy="70%" r="55%">
+            <stop offset="0%" stop-color="rgba(232,75,0,0.55)"/>
+            <stop offset="45%" stop-color="rgba(180,70,0,0.18)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Background -->
+        <circle cx="140" cy="140" r="138" fill="url(#bg-c)"/>
+
+        <!-- Fire halo behind skull -->
+        <ellipse cx="140" cy="178" rx="66" ry="58" fill="url(#fire-c)" filter="url(#fire-gl)"/>
+
+        <!-- Outer rings -->
+        <circle cx="140" cy="140" r="136" fill="none" stroke="#c9a227" stroke-width="2.5"/>
+        <circle cx="140" cy="140" r="129" fill="none" stroke="#6a4900" stroke-width="1"/>
+        <circle cx="140" cy="140" r="100" fill="none" stroke="#c9a227" stroke-width="0.8" stroke-dasharray="3,4"/>
+
+        <!-- Arced text paths -->
+        <path id="at" d="M 18,140 A 122,122 0 0,1 262,140" fill="none"/>
+        <path id="ab" d="M 30,152 A 114,114 0 0,0 250,152" fill="none"/>
+
+        <!-- INSANOS MC (top arc) -->
+        <text font-family="'Black Ops One',cursive" font-size="21" fill="#f0e0a0" letter-spacing="5" text-anchor="middle">
+          <textPath href="#at" startOffset="50%">INSANOS MC</textPath>
+        </text>
+
+        <!-- REGIONAL AVARÉ · SP (bottom arc) -->
+        <text font-family="'Black Ops One',cursive" font-size="13" fill="#c9a227" letter-spacing="2.5" text-anchor="middle">
+          <textPath href="#ab" startOffset="50%">REGIONAL AVARÉ · SP</textPath>
+        </text>
+
+        <!-- Side dividers & numbers -->
+        <line x1="14" y1="143" x2="38" y2="143" stroke="#c9a227" stroke-width="1.5"/>
+        <line x1="242" y1="143" x2="266" y2="143" stroke="#c9a227" stroke-width="1.5"/>
+        <text x="26" y="165" font-family="'Black Ops One',cursive" font-size="13" fill="#c9a227" text-anchor="middle">18</text>
+        <text x="254" y="165" font-family="'Black Ops One',cursive" font-size="13" fill="#c9a227" text-anchor="middle">OZ</text>
+
+        <!-- Stars -->
+        <text x="60" y="152" font-family="sans-serif" font-size="12" fill="#c9a227" text-anchor="middle">★</text>
+        <text x="220" y="152" font-family="sans-serif" font-size="12" fill="#c9a227" text-anchor="middle">★</text>
+
+        <!-- Cowboy hat — brim -->
+        <ellipse cx="140" cy="110" rx="46" ry="11" fill="#0d0900"/>
+        <ellipse cx="140" cy="110" rx="46" ry="11" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+        <!-- Hat crown -->
+        <path d="M 107,110 L 104,73 Q 106,62 140,62 Q 174,62 176,73 L 173,110 Z" fill="#090700"/>
+        <path d="M 107,110 L 104,73 Q 106,62 140,62 Q 174,62 176,73 L 173,110 Z" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+        <!-- Hat band -->
+        <rect x="109" y="100" width="62" height="7" fill="#1a1000"/>
+        <!-- Iron cross on hat -->
+        <rect x="137.5" y="69" width="5" height="20" rx="1.5" fill="#c9a227"/>
+        <rect x="130" y="76" width="20" height="5" rx="1.5" fill="#c9a227"/>
+        <circle cx="140" cy="78.5" r="3.5" fill="#6a4900"/>
+        <circle cx="140" cy="78.5" r="2" fill="#c9a227"/>
+
+        <!-- Skull head -->
+        <ellipse cx="140" cy="150" rx="34" ry="37" fill="url(#skull-c)"/>
+        <!-- Skull highlight -->
+        <ellipse cx="132" cy="139" rx="12" ry="9" fill="rgba(255,255,255,0.13)"/>
+
+        <!-- Eye sockets -->
+        <ellipse cx="127" cy="149" rx="10" ry="12" fill="#0a0500"/>
+        <ellipse cx="153" cy="149" rx="10" ry="12" fill="#0a0500"/>
+
+        <!-- GLOWING ORANGE EYES — outer glow -->
+        <ellipse cx="127" cy="149" rx="8" ry="10" fill="#e84b00" filter="url(#eye-gl)"/>
+        <ellipse cx="153" cy="149" rx="8" ry="10" fill="#e84b00" filter="url(#eye-gl)"/>
+        <!-- Eye bright center -->
+        <ellipse cx="127" cy="149" rx="4.5" ry="5.5" fill="#ffcc00"/>
+        <ellipse cx="153" cy="149" rx="4.5" ry="5.5" fill="#ffcc00"/>
+        <!-- Eye pupil -->
+        <ellipse cx="127" cy="149" rx="1.8" ry="3" fill="#c84000"/>
+        <ellipse cx="153" cy="149" rx="1.8" ry="3" fill="#c84000"/>
+
+        <!-- Nose -->
+        <path d="M 137,163 L 134,172 Q 140,176 146,172 L 143,163 Z" fill="#0a0500"/>
+
+        <!-- Jaw line -->
+        <path d="M 115,177 Q 128,186 140,187 Q 152,186 165,177" fill="none" stroke="#b09060" stroke-width="1.5"/>
+        <!-- Teeth -->
+        <rect x="122" y="177" width="7" height="10" rx="1.5" fill="#e8dfc0"/>
+        <rect x="130.5" y="177" width="7" height="11" rx="1.5" fill="#e8dfc0"/>
+        <rect x="139.5" y="177" width="7" height="11" rx="1.5" fill="#e8dfc0"/>
+        <rect x="148" y="177" width="7" height="10" rx="1.5" fill="#e8dfc0"/>
+
+        <!-- Simplified horse silhouettes (left & right) -->
+        <g opacity="0.6">
+          <!-- Left horse -->
+          <path d="M44,195 C38,182 36,172 42,165 C48,158 54,160 56,168 C60,162 68,158 70,165 C72,172 66,178 62,183 L64,195 L58,197 L56,192 L52,195 Z" fill="#c9a227"/>
+          <!-- Right horse (mirrored) -->
+          <path d="M236,195 C242,182 244,172 238,165 C232,158 226,160 224,168 C220,162 212,158 210,165 C208,172 214,178 218,183 L216,195 L222,197 L224,192 L228,195 Z" fill="#c9a227"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero-badge">✦ INSANOS MC — Regional Avaré/SP ✦</div>
+
+  <h1 class="hero-h1">
+    <span class="h1-bolao">Bolão</span>
+    <span class="h1-regional">Regional</span>
+    <span class="h1-avare">Avaré</span>
+  </h1>
+
+  <p class="hero-sub">
+    <span class="brk">{</span>
+    &nbsp;Copa da Regional · 2026&nbsp;
+    <span class="brk">}</span>
+  </p>
+
+  <!-- Corrente ornamental -->
+  <div class="chain-orn" aria-hidden="true">
+    <svg viewBox="0 0 400 22" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="cf" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(201,162,39,0)"/>
+          <stop offset="12%" stop-color="rgba(201,162,39,0.8)"/>
+          <stop offset="50%" stop-color="rgba(201,162,39,1)"/>
+          <stop offset="88%" stop-color="rgba(201,162,39,0.8)"/>
+          <stop offset="100%" stop-color="rgba(201,162,39,0)"/>
+        </linearGradient>
+        <pattern id="cp" x="0" y="0" width="40" height="22" patternUnits="userSpaceOnUse">
+          <ellipse cx="10" cy="11" rx="8.5" ry="4.5" fill="none" stroke="#c9a227" stroke-width="2.2"/>
+          <ellipse cx="10" cy="11" rx="5.5" ry="2.5" fill="none" stroke="#f0c060" stroke-width="0.7" opacity="0.45"/>
+          <ellipse cx="30" cy="11" rx="4.5" ry="8.5" fill="none" stroke="#c9a227" stroke-width="2.2"/>
+          <ellipse cx="30" cy="11" rx="2.5" ry="5.5" fill="none" stroke="#f0c060" stroke-width="0.7" opacity="0.45"/>
+        </pattern>
+        <mask id="cm"><rect width="400" height="22" fill="url(#cf)"/></mask>
+      </defs>
+      <rect width="400" height="22" fill="url(#cp)" mask="url(#cm)"/>
+    </svg>
+  </div>
+
+  <p class="hero-slogan">
+    Acertou o placar exato, está na disputa.<br>
+    <strong>Se mais irmãos acertarem, a decisão vai para pergunta sobre o MC.</strong>
+  </p>
+
+  <div class="hero-stats">
+    <div class="h-stat"><div class="h-stat-n" id="stJogos">0</div><div class="h-stat-l">Jogos</div></div>
+    <div class="h-stat"><div class="h-stat-n" id="stPalp">0</div><div class="h-stat-l">Palpites</div></div>
+    <div class="h-stat"><div class="h-stat-n" id="stPart">0</div><div class="h-stat-l">Participantes</div></div>
+  </div>
+
+  <button class="btn-hero" onclick="ir('#palpite')">⚡ Dê Seu Palpite!</button>
+
+  <div class="hero-fire"></div>
+</section>
+
+<!-- ════════ SEPARADOR ════════ -->
+<div class="sep-chain">
+  <div class="sep-chain-ico">☠</div>
+</div>
+
+<!-- ════════ JOGOS ════════ -->
+<section id="jogos">
+  <div class="ctn">
+    <div class="sec-h">Jogos <span class="hl">do Bolão</span></div>
+    <div class="sec-sub">Clique em "Participar" para registrar seu palpite no jogo</div>
+    <div class="jogos-grid" id="listaJogos"></div>
+  </div>
+</section>
+
+<!-- ════════ SEPARADOR ════════ -->
+<div class="sep-chain" style="background:none">
+  <div class="sep-chain-ico" style="font-size:12px;color:var(--dourado);padding:0 12px">✦</div>
+</div>
+
+<!-- ════════ REGRAS ════════ -->
+<section id="regras" style="background:rgba(0,0,0,.3)">
+  <div class="ctn">
+    <div class="sec-h">Regras <span class="hl">do Bolão</span></div>
+    <div class="sec-sub">Como funciona a disputa entre os irmãos</div>
+    <div class="regras-grid">
+      <div class="regra"><div class="regra-n">01</div><div class="regra-t">Ganha quem acertar o <strong>placar exato</strong> do jogo.</div></div>
+      <div class="regra"><div class="regra-n">02</div><div class="regra-t">Se mais de um irmão acertar, será feita uma <strong>pergunta sobre o MC</strong>.</div></div>
+      <div class="regra"><div class="regra-n">03</div><div class="regra-t">O <strong>primeiro a responder</strong> corretamente leva o prêmio.</div></div>
+      <div class="regra"><div class="regra-n">04</div><div class="regra-t">Se ninguém acertar, a grana vai para a <strong>Regional Avaré</strong> — rolê, café ou ação interna.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FORMULÁRIO PALPITE ════════ -->
+<section id="palpite">
+  <div class="ctn">
+    <div class="sec-h">Dar <span class="hl">Palpite</span></div>
+    <div class="sec-sub">Informe seu nome, WhatsApp e o placar que você acredita</div>
+
+    <div class="form-card mt-20" id="formWrap">
+      <div id="alertaForm"></div>
+      <form onsubmit="return false">
+
+        <!-- PASSO 1: Dados do palpite -->
+        <div id="formCampos">
+          <div class="f-grid">
+            <div class="fg">
+              <label>Seu nome <span class="req">*</span></label>
+              <input type="text" id="fNome" placeholder="Como te chamam no rolê" maxlength="60" autocomplete="name">
+              <span class="err" id="eNome"></span>
+            </div>
+            <div class="fg">
+              <label>WhatsApp <span class="req">*</span></label>
+              <input type="tel" id="fWhats" placeholder="(14) 9 9999-9999" maxlength="20">
+              <span class="err" id="eWhats"></span>
+            </div>
+            <div class="fg full">
+              <label>Jogo <span class="req">*</span></label>
+              <select id="fJogo" onchange="onJogoChange()">
+                <option value="">Selecione o jogo...</option>
+              </select>
+              <span class="err" id="eJogo"></span>
+            </div>
+          </div>
+
+          <div id="placarWrap" class="hidden mt-20">
+            <label style="display:block;margin-bottom:12px">Seu placar palpitado <span class="req">*</span></label>
+            <div class="pl-form">
+              <div>
+                <div class="pl-lbl" id="pLblA">Time A</div>
+                <input type="number" id="fGolA" min="0" max="99" placeholder="0" style="font-size:32px">
+              </div>
+              <div class="pl-form-x">×</div>
+              <div>
+                <div class="pl-lbl" id="pLblB">Time B</div>
+                <input type="number" id="fGolB" min="0" max="99" placeholder="0" style="font-size:32px">
+              </div>
+            </div>
+            <span class="err mt-12" id="ePlacar"></span>
+          </div>
+
+          <div class="mt-24">
+            <button class="btn btn-ouro btn-block" onclick="irParaPagamento()" style="font-size:16px;padding:16px">
+              💳 Próximo: Pagamento R$ 10
+            </button>
+          </div>
+        </div>
+
+        <!-- PASSO 2: Pagamento -->
+        <div id="pagoStep" class="hidden pay-step">
+          <div class="pay-resume">
+            <div class="pay-resume-info">
+              <div class="pay-resume-nome" id="payNome"></div>
+              <div class="pay-resume-jogo" id="payJogo"></div>
+            </div>
+            <div class="pay-resume-pl" id="payPl"></div>
+          </div>
+
+          <div class="pay-val-block">
+            <div class="pay-val" id="payValor">R$ 10,00</div>
+            <div class="pay-val-desc">Valor para participar do bolão</div>
+          </div>
+
+          <a id="btnMP" href="https://mpago.la/1xS4geP"
+             target="_blank" rel="noopener" class="btn-mp">
+            💳 Pagar pelo Mercado Pago
+          </a>
+
+          <div class="pay-url-row">
+            <span class="pay-url-txt" id="payUrlTxt">https://mpago.la/1xS4geP</span>
+            <button type="button" class="pay-copy-btn" onclick="copyPayUrl()" title="Copiar link">⎘</button>
+          </div>
+
+          <div style="border-top:1px solid var(--borda);padding-top:20px;margin-top:20px">
+            <p class="pay-obs">
+              Após realizar o pagamento, clique em <strong style="color:var(--dourado)">Já Paguei</strong>.<br>
+              O organizador irá confirmar e ativar seu palpite.
+            </p>
+            <button type="button" class="btn btn-ouro btn-block mt-16" onclick="confirmarComPagamento()" style="font-size:16px;padding:14px">
+              ✅ Já Paguei — Enviar Palpite
+            </button>
+            <button type="button" class="btn btn-ghost btn-block mt-12" onclick="voltarForm()" style="font-size:12px">
+              ← Voltar e corrigir
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ PALPITES ════════ -->
+<section id="palpites" style="background:rgba(0,0,0,.25)">
+  <div class="ctn">
+    <div class="flex-bw mb-20">
+      <div>
+        <div class="sec-h" style="margin-bottom:4px">Palpites <span class="hl">Registrados</span></div>
+        <div class="sec-sub" style="margin-bottom:0">Total: <span id="totPalp">0</span> palpite(s)</div>
+      </div>
+      <button class="btn btn-out btn-sm" id="btnToggle" onclick="toggleVis()">👁 Ocultar palpites</button>
+    </div>
+
+    <div id="palConteudo">
+      <div class="mb-16">
+        <select id="filtroJogo" onchange="renderPalpites()" style="max-width:300px;font-size:13px;padding:8px 12px">
+          <option value="">Todos os jogos</option>
+        </select>
+      </div>
+      <div class="pal-lista" id="listaPalp"></div>
+    </div>
+
+    <div class="pal-oculto" id="palOculto">
+      <div style="font-size:36px;margin-bottom:12px">🔒</div>
+      <div>Palpites ocultados pelo organizador</div>
+      <div style="font-size:12px;margin-top:4px">Serão revelados após o jogo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ADMIN ════════ -->
+<section id="admin">
+  <div class="ctn">
+    <div class="sec-h">Painel do <span class="hl">Organizador</span></div>
+    <div class="sec-sub">Área restrita — acesso por senha</div>
+
+    <div class="adm-login-w mt-24" id="admLogin">
+      <div class="form-card">
+        <div class="fg mb-16">
+          <label>Senha de acesso</label>
+          <input type="password" id="admSenha" placeholder="••••••••"
+                 style="font-size:16px;text-align:left;font-family:var(--f-body)"
+                 onkeydown="if(event.key==='Enter')loginAdm()">
+          <span class="err" id="eAdmSenha"></span>
+        </div>
+        <button class="btn btn-ouro btn-block" onclick="loginAdm()">Entrar no painel</button>
+      </div>
+    </div>
+
+    <div id="admPainel" class="hidden mt-24">
+      <div class="flex-bw mb-24">
+        <div class="flex-c gap-8">
+          <span class="s-badge s-aberto"><span class="s-dot"></span>Logado</span>
+          <span style="font-size:13px;color:var(--prata-esc)">Bem-vindo, organizador</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="logoutAdm()">Sair</button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab on" onclick="mudarTab('tJogos',this)">🏆 Jogos</button>
+        <button class="tab"    onclick="mudarTab('tResult',this)">⚽ Resultado</button>
+        <button class="tab"    onclick="mudarTab('tPalpAdm',this)">📋 Palpites<span class="tab-badge" id="tabPendBadge" style="display:none">0</span></button>
+        <button class="tab"    onclick="mudarTab('tDados',this)">⚙ Dados</button>
+      </div>
+
+      <!-- Tab: Jogos -->
+      <div class="tab-pane on" id="tJogos">
+        <div class="adm-sec">Cadastrar Novo Jogo</div>
+        <div class="form-card mb-24">
+          <div class="f-grid">
+            <div class="fg"><label>Seleção A <span class="req">*</span></label><input type="text" id="jTA" placeholder="Brasil" style="font-size:15px;text-align:left;font-family:var(--f-body)"></div>
+            <div class="fg"><label>Seleção B <span class="req">*</span></label><input type="text" id="jTB" placeholder="Argentina" style="font-size:15px;text-align:left;font-family:var(--f-body)"></div>
+            <div class="fg"><label>Emoji Bandeira A</label><input type="text" id="jBA" placeholder="🇧🇷" style="font-size:24px;text-align:center"></div>
+            <div class="fg"><label>Emoji Bandeira B</label><input type="text" id="jBB" placeholder="🇦🇷" style="font-size:24px;text-align:center"></div>
+            <div class="fg"><label>Grupo</label><input type="text" id="jGrupo" placeholder="Grupo C" style="font-size:15px;text-align:left;font-family:var(--f-body)"></div>
+            <div class="fg"><label>Data</label><input type="date" id="jData" style="font-size:15px;text-align:left;font-family:var(--f-body)"></div>
+            <div class="fg"><label>Horário</label><input type="time" id="jHora" style="font-size:15px;text-align:left;font-family:var(--f-body)"></div>
+            <div class="fg"><label>Status</label>
+              <select id="jStatus">
+                <option value="aberto">Aberto</option>
+                <option value="encerrado">Encerrado</option>
+                <option value="finalizado">Finalizado</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-20"><button class="btn btn-ouro" onclick="addJogo()">+ Cadastrar jogo</button></div>
+        </div>
+        <div class="adm-sec">Jogos cadastrados</div>
+        <div class="t-w" id="admListaJogos"></div>
+      </div>
+
+      <!-- Tab: Resultado -->
+      <div class="tab-pane" id="tResult">
+        <div class="adm-sec">Inserir Resultado Oficial</div>
+        <div class="form-card mb-24">
+          <div class="fg mb-16">
+            <label>Jogo</label>
+            <select id="resJogo" onchange="onResChange()" style="font-size:14px;text-align:left;font-family:var(--f-body)">
+              <option value="">Selecione o jogo...</option>
+            </select>
+          </div>
+          <div id="resInfo" class="hidden mb-16"
+               style="padding:14px;background:#080604;border-radius:8px;border:1px solid #1e1b10;text-align:center">
+            <div style="font-size:36px;margin-bottom:6px" id="resBand"></div>
+            <div style="font-family:var(--f-tit);font-size:16px;text-transform:uppercase;letter-spacing:1px" id="resNomes"></div>
+          </div>
+          <div id="resPlacarW" class="hidden">
+            <label style="display:block;margin-bottom:12px">Placar oficial</label>
+            <div class="pl-form mb-16">
+              <div>
+                <div class="pl-lbl" id="resLblA">-</div>
+                <input type="number" id="resGA" min="0" max="99" placeholder="0" style="font-size:32px">
+              </div>
+              <div class="pl-form-x">×</div>
+              <div>
+                <div class="pl-lbl" id="resLblB">-</div>
+                <input type="number" id="resGB" min="0" max="99" placeholder="0" style="font-size:32px">
+              </div>
+            </div>
+            <button class="btn btn-ouro" onclick="salvarResult()">⚽ Salvar resultado oficial</button>
+          </div>
+        </div>
+        <div id="resVenc" class="hidden">
+          <div class="adm-sec">Resultado do Bolão</div>
+          <div id="resConteudo"></div>
+        </div>
+      </div>
+
+      <!-- Tab: Palpites admin -->
+      <div class="tab-pane" id="tPalpAdm">
+        <div class="flex-bw mb-16">
+          <div class="adm-sec" style="margin-bottom:0">Todos os palpites</div>
+          <div class="flex gap-8" style="flex-wrap:wrap">
+            <select id="admFiltJogo" onchange="renderPalpAdmin()" style="font-size:11px;padding:6px 10px">
+              <option value="">Todos os jogos</option>
+            </select>
+            <button class="btn btn-out btn-sm" onclick="exportCSV()">⬇ Exportar CSV</button>
+          </div>
+        </div>
+        <div class="t-w" id="admListaPalp"></div>
+      </div>
+
+      <!-- Tab: Dados -->
+      <div class="tab-pane" id="tDados">
+        <div class="adm-sec">Pagamento</div>
+        <div class="form-card mb-24">
+          <div class="f-grid">
+            <div class="fg">
+              <label>Valor do palpite (R$)</label>
+              <input type="number" id="cfgValor" min="1" max="999" placeholder="10"
+                     style="font-size:24px;text-align:center;font-family:var(--f-disp);padding:10px"
+                     onchange="salvarCfgPgto()">
+            </div>
+            <div class="fg">
+              <label>Link Mercado Pago</label>
+              <input type="url" id="cfgMpLink" placeholder="https://link.mercadopago.com.br/..."
+                     style="font-size:13px;text-align:left;font-family:var(--f-body)"
+                     onblur="salvarCfgPgto()">
+            </div>
+          </div>
+          <div class="mt-12" style="font-size:12px;color:var(--prata-esc)">
+            Cole o link gerado no seu Mercado Pago. O participante pagará antes de confirmar o palpite.
+          </div>
+        </div>
+
+        <div class="adm-sec">Visibilidade</div>
+        <div class="form-card mb-24">
+          <div class="fg mb-0">
+            <label>Exibição dos palpites para o público</label>
+            <select id="cfgVis" onchange="salvarCfgVis()" style="font-size:14px;text-align:left;font-family:var(--f-body)">
+              <option value="visivel">Mostrar palpites para todos</option>
+              <option value="oculto">Ocultar palpites</option>
+            </select>
+          </div>
+        </div>
+        <div class="adm-sec">Ações de dados</div>
+        <div style="display:flex;flex-direction:column;gap:10px;max-width:360px">
+          <button class="btn btn-ghost" onclick="exportCSV()">⬇ Exportar palpites em CSV</button>
+          <button class="btn btn-danger" onclick="confAcao('Limpar palpites','Remove todos os palpites. Ação irreversível.',limparPalp)">🗑 Limpar todos os palpites</button>
+          <button class="btn btn-danger" onclick="confAcao('Resetar tudo','Remove TODOS os jogos e palpites. Sem volta.',resetTudo)">⚠ Resetar tudo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <img src="assets/logo-regional-avare.png" alt="Logo" class="footer-logo"
+       onerror="this.style.display='none';document.getElementById('flf').style.display='flex'">
+  <div class="footer-logo-fb" id="flf">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+      <circle cx="24" cy="24" r="23" fill="#0d0a02"/>
+      <circle cx="24" cy="24" r="22" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+      <text x="24" y="30" font-family="sans-serif" font-size="20" fill="#e84b00" text-anchor="middle">☠</text>
+    </svg>
+  </div>
+  <div style="font-family:var(--f-tit);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px">
+    <strong>INSANOS MC</strong> · Regional Avaré/SP
+  </div>
+  <div>Bolão interno · Use com responsabilidade, irmão.</div>
+</footer>
+
+<!-- ════════ MODAL CONFIRMAÇÃO ════════ -->
+<div class="modal-ov off" id="modalConf">
+  <div class="modal-box">
+    <button class="modal-x" onclick="fechaModal('modalConf')">✕</button>
+    <div class="modal-h" id="mConfH"></div>
+    <div class="modal-s" id="mConfS"></div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="fechaModal('modalConf')">Cancelar</button>
+      <button class="btn btn-danger" id="mConfOk">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     JAVASCRIPT — preservado integralmente
+     ════════════════════════════════════════════════ -->
+<script>
+/* ── CONSTANTES ── */
+const KEY   = 'bolaoInsanosAvare_v2';
+const SENHA = 'insanosavare';
+const MP_LINK_DEFAULT = 'https://mpago.la/1xS4geP';
+
+const INICIAL = {
+  jogos:[{
+    id:1, timeA:'Brasil', timeB:'Haiti',
+    bandA:'🇧🇷', bandB:'🇭🇹',
+    grupo:'Grupo C', data:'2026-06-19', hora:'21:30',
+    status:'aberto', golAOf:null, golBOf:null,
+    criadoEm:new Date().toISOString()
+  }],
+  palpites:[],
+  cfg:{ vis:'visivel', mpLink: MP_LINK_DEFAULT, valor: 10 }
+};
+
+const st = { vis:true, adm:false };
+let _tmpPalp = null;
+
+/* ── PERSISTÊNCIA ── */
+function load(){
+  try{
+    const r=localStorage.getItem(KEY);
+    if(!r) return JSON.parse(JSON.stringify(INICIAL));
+    const d=JSON.parse(r);
+    if(!d.cfg) d.cfg={vis:'visivel'};
+    /* migração: corrige data do jogo Brasil x Haiti de 2025 para 2026 */
+    const j1=(d.jogos||[]).find(j=>j.id===1&&j.data==='2025-06-19');
+    if(j1){j1.data='2026-06-19';save(d);}
+    return d;
+  }catch{ return JSON.parse(JSON.stringify(INICIAL)); }
+}
+function save(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){ console.error(e); } }
+
+/* ── UTILS ── */
+function ir(sel){ document.querySelector(sel)?.scrollIntoView({behavior:'smooth',block:'start'}); }
+
+function fmtData(s){
+  if(!s) return '';
+  const [y,m,d]=s.split('-');
+  const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  return `${dias[new Date(+y,+m-1,+d).getDay()]} ${d}/${m}`;
+}
+function fmtDH(iso){
+  if(!iso) return '';
+  const d=new Date(iso);
+  return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+}
+function norm(s){ return (s||'').replace(/\D/g,''); }
+
+function alerta(id,tipo,titulo,txt){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const ico={ok:'✅',err:'❌',info:'⚡'};
+  el.className=`alerta a-${tipo} v`;
+  el.innerHTML=`<span class="a-ico">${ico[tipo]||'ℹ️'}</span><div class="a-body">${titulo?`<strong>${titulo}</strong>`:''}${txt}</div>`;
+  if(tipo==='ok') setTimeout(()=>el.classList.remove('v'),7000);
+}
+function fechaModal(id){ document.getElementById(id).classList.add('off'); }
+function confAcao(h,s,fn){
+  document.getElementById('mConfH').textContent=h;
+  document.getElementById('mConfS').textContent=s;
+  document.getElementById('mConfOk').onclick=()=>{fechaModal('modalConf');fn();};
+  document.getElementById('modalConf').classList.remove('off');
+}
+
+/* ── RENDER JOGOS ── */
+function renderJogos(){
+  const d=load();
+  const cont=document.getElementById('listaJogos');
+  const sels=['fJogo','filtroJogo','resJogo','admFiltJogo'].map(i=>document.getElementById(i));
+
+  sels.forEach(s=>{
+    if(!s) return;
+    const f=s.options[0]?.cloneNode(true);
+    s.innerHTML='';
+    if(f) s.appendChild(f);
+  });
+
+  if(!d.jogos?.length){
+    cont.innerHTML='<div class="empty-st"><div class="empty-ico">⚽</div><div>Nenhum jogo cadastrado.</div></div>';
+    return;
+  }
+
+  const sClass={aberto:'s-aberto',encerrado:'s-encerrado',finalizado:'s-finalizado'};
+  const sLabel={aberto:'Aberto para palpites',encerrado:'Encerrado',finalizado:'Finalizado'};
+
+  cont.innerHTML=d.jogos.map(j=>{
+    const qtdAtivos=(d.palpites||[]).filter(p=>(p.status==='ativo'||!p.status)&&p.jId===j.id).length;
+    const qtdPend  =(d.palpites||[]).filter(p=>p.status==='pendente'&&p.jId===j.id).length;
+    const dot=j.status==='aberto'?'<span class="s-dot"></span>':'';
+    const clsA=j.timeA.toLowerCase()==='brasil'?'t-brasil':'';
+    const clsB=j.timeB.toLowerCase()==='haiti'?'t-haiti':'';
+
+    let plOf='';
+    if(j.status==='finalizado'&&j.golAOf!==null){
+      plOf=`<div class="pl-of"><div class="pl-of-lbl">Placar oficial</div><div class="pl-of-num">${j.golAOf} — ${j.golBOf}</div></div>`;
+    }
+
+    return `<div class="card-jogo">
+      <div class="card-jogo-inner">
+        <div class="card-top">
+          <div class="grupo-tag">${j.grupo||'Copa'}</div>
+          <span class="s-badge ${sClass[j.status]||'s-aberto'}">${dot}${sLabel[j.status]||j.status}</span>
+        </div>
+        <div class="card-times">
+          <div class="time-bloco ${clsA}">
+            <div class="time-escudo"><div class="time-band">${j.bandA||'🏳️'}</div></div>
+            <div class="time-nome">${j.timeA}</div>
+          </div>
+          <div class="versus">
+            <div class="versus-x">X</div>
+            <div class="versus-vs">versus</div>
+          </div>
+          <div class="time-bloco ${clsB}">
+            <div class="time-escudo"><div class="time-band">${j.bandB||'🏳️'}</div></div>
+            <div class="time-nome">${j.timeB}</div>
+          </div>
+        </div>
+        <div class="card-infos">
+          <span class="i-chip">📅 ${fmtData(j.data)}</span>
+          <span class="i-chip">🕐 ${j.hora||'--:--'}</span>
+          <span class="i-chip">📝 ${qtdAtivos} palpite${qtdAtivos!==1?'s':''}${qtdPend>0?` <span style="color:#f0a020">(+${qtdPend} pend.)</span>`:''}</span>
+        </div>
+        ${plOf}
+        ${j.status==='aberto'?`<div class="tc mt-20"><button class="btn btn-ouro" onclick="irPalpitar(${j.id})">⚡ Participar do bolão</button></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
+  d.jogos.forEach(j=>{
+    const lbl=`${j.timeA} x ${j.timeB} — ${fmtData(j.data)}`;
+    const o=new Option(lbl,j.id);
+    if(j.status!=='aberto') o.disabled=true;
+    document.getElementById('fJogo')?.appendChild(o.cloneNode(true));
+    document.getElementById('filtroJogo')?.appendChild(new Option(lbl,j.id));
+    document.getElementById('resJogo')?.appendChild(new Option(lbl,j.id));
+    document.getElementById('admFiltJogo')?.appendChild(new Option(lbl,j.id));
+    const sel=document.getElementById('fJogo');
+    if(sel&&sel.options.length>0){
+      const last=sel.options[sel.options.length-1];
+      if(last.value==j.id) last.disabled=(j.status!=='aberto');
+    }
+  });
+}
+
+function irPalpitar(jId){
+  document.getElementById('fJogo').value=jId;
+  onJogoChange();
+  ir('#palpite');
+}
+
+/* ── FORM PALPITE ── */
+function onJogoChange(){
+  const jId=parseInt(document.getElementById('fJogo').value);
+  const w=document.getElementById('placarWrap');
+  if(!jId){w.classList.add('hidden');return;}
+  const j=load().jogos.find(x=>x.id===jId);
+  if(!j){w.classList.add('hidden');return;}
+  document.getElementById('pLblA').textContent=j.timeA;
+  document.getElementById('pLblB').textContent=j.timeB;
+  w.classList.remove('hidden');
+}
+
+function validarForm(){
+  let ok=true;
+  const err=(id,msg)=>{
+    const e=document.getElementById(id);
+    e.textContent=msg; e.classList.toggle('v',!!msg);
+    if(msg) ok=false;
+  };
+  const nome =document.getElementById('fNome').value.trim();
+  const whats=norm(document.getElementById('fWhats').value);
+  const jId  =parseInt(document.getElementById('fJogo').value);
+  const golA =document.getElementById('fGolA').value;
+  const golB =document.getElementById('fGolB').value;
+
+  err('eNome',  !nome?'Informe seu nome.':'');
+  err('eWhats', !whats||whats.length<10?'WhatsApp inválido.':'');
+  err('eJogo',  !jId?'Selecione um jogo.':'');
+  err('ePlacar',jId&&(golA===''||golB===''||+golA<0||+golB<0)?'Informe o placar (pode ser 0).':'');
+  return ok;
+}
+
+function irParaPagamento(){
+  if(!validarForm()) return;
+  const d     =load();
+  const nome  =document.getElementById('fNome').value.trim();
+  const whatsR=document.getElementById('fWhats').value.trim();
+  const whats =norm(whatsR);
+  const jId   =parseInt(document.getElementById('fJogo').value);
+  const golA  =parseInt(document.getElementById('fGolA').value);
+  const golB  =parseInt(document.getElementById('fGolB').value);
+
+  const j=d.jogos.find(x=>x.id===jId);
+  if(!j||j.status!=='aberto'){
+    alerta('alertaForm','err','Jogo fechado!','Este jogo não aceita mais palpites.'); return;
+  }
+  if((d.palpites||[]).find(p=>p.jId===jId&&norm(p.whats)===whats)){
+    alerta('alertaForm','err','Palpite duplicado!',`Já existe palpite com o WhatsApp ${whatsR} neste jogo.`); return;
+  }
+
+  _tmpPalp = {nome, whats:whatsR, jId, golA, golB};
+
+  const val  = d.cfg?.valor || 10;
+  const link = d.cfg?.mpLink || MP_LINK_DEFAULT;
+
+  document.getElementById('payNome').textContent  = nome;
+  document.getElementById('payJogo').textContent  = `${j.timeA} × ${j.timeB}`;
+  document.getElementById('payPl').textContent    = `${golA} – ${golB}`;
+  document.getElementById('payValor').textContent = `R$ ${val},00`;
+  document.getElementById('btnMP').href           = link;
+  document.getElementById('payUrlTxt').textContent= link;
+
+  document.getElementById('formCampos').classList.add('hidden');
+  document.getElementById('pagoStep').classList.remove('hidden');
+  document.getElementById('alertaForm').className='alerta';
+}
+
+function voltarForm(){
+  _tmpPalp=null;
+  document.getElementById('pagoStep').classList.add('hidden');
+  document.getElementById('formCampos').classList.remove('hidden');
+  const jId=parseInt(document.getElementById('fJogo').value);
+  if(jId) document.getElementById('placarWrap').classList.remove('hidden');
+}
+
+function confirmarComPagamento(){
+  if(!_tmpPalp){voltarForm();return;}
+  const d=load();
+  const {nome,whats:whatsR,jId,golA,golB}=_tmpPalp;
+  const j=d.jogos.find(x=>x.id===jId);
+  if(!j||j.status!=='aberto'){
+    alerta('alertaForm','err','Jogo fechado!','Este jogo não aceita mais palpites.');voltarForm();return;
+  }
+  if((d.palpites||[]).find(p=>p.jId===jId&&norm(p.whats)===norm(whatsR))){
+    alerta('alertaForm','err','Palpite duplicado!',`Já existe palpite com este WhatsApp neste jogo.`);voltarForm();return;
+  }
+
+  d.palpites.push({id:Date.now(),nome,whats:whatsR,jId,golA,golB,em:new Date().toISOString(),status:'pendente'});
+  save(d); _tmpPalp=null;
+
+  ['fNome','fWhats','fGolA','fGolB'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('fJogo').value='';
+  document.getElementById('pagoStep').classList.add('hidden');
+  document.getElementById('formCampos').classList.remove('hidden');
+
+  alerta('alertaForm','ok','Palpite enviado! ⏳',
+    `${nome}, seu palpite <strong>${j.timeA} ${golA}×${golB} ${j.timeB}</strong> foi recebido. O organizador ativará após confirmar o pagamento.`);
+  updatePendBadge(); stats();
+}
+
+function copyPayUrl(){
+  const url=document.getElementById('payUrlTxt').textContent;
+  navigator.clipboard?.writeText(url).catch(()=>{});
+  const btn=document.querySelector('.pay-copy-btn');
+  if(btn){const o=btn.textContent;btn.textContent='✓';setTimeout(()=>btn.textContent=o,2000);}
+}
+
+/* ── PALPITES PÚBLICOS ── */
+function renderPalpites(){
+  const d   =load();
+  const cont=document.getElementById('listaPalp');
+  const filt=document.getElementById('filtroJogo').value;
+  let palp  =(d.palpites||[]).filter(p=>p.status==='ativo'||!p.status);
+  if(filt) palp=palp.filter(p=>p.jId==filt);
+  document.getElementById('totPalp').textContent=palp.length;
+
+  if(!palp.length){
+    cont.innerHTML='<div class="empty-st"><div class="empty-ico">📋</div><div>Nenhum palpite ainda. Seja o primeiro!</div></div>';
+    return;
+  }
+  cont.innerHTML=palp.map(p=>{
+    const j=(d.jogos||[]).find(x=>x.id===p.jId);
+    const nj=j?`${j.timeA} x ${j.timeB}`:'Jogo removido';
+    const v=j&&j.status==='finalizado'&&j.golAOf!==null&&p.golA===j.golAOf&&p.golB===j.golBOf;
+    return `<div class="pal-card${v?' venc':''}">
+      <div class="pal-info">
+        <div class="pal-nome">${p.nome}</div>
+        <div class="pal-jogo">${nj}</div>
+        ${v?'<div class="mt-12"><span class="venc-tag">🏆 Acertou!</span></div>':''}
+      </div>
+      <div class="pal-pl">${p.golA} – ${p.golB}</div>
+      <div class="pal-dt">${fmtDH(p.em)}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleVis(){
+  st.vis=!st.vis;
+  document.getElementById('palConteudo').classList.toggle('hidden',!st.vis);
+  document.getElementById('palOculto').classList.toggle('v',!st.vis);
+  document.getElementById('btnToggle').textContent=st.vis?'👁 Ocultar palpites':'👁 Mostrar palpites';
+}
+
+/* ── ADMIN ── */
+function loginAdm(){
+  const s=document.getElementById('admSenha').value;
+  const e=document.getElementById('eAdmSenha');
+  if(s===SENHA){
+    st.adm=true;
+    document.getElementById('admLogin').classList.add('hidden');
+    document.getElementById('admPainel').classList.remove('hidden');
+    const d=load();
+    document.getElementById('cfgVis').value=d.cfg?.vis||'visivel';
+    document.getElementById('cfgValor').value=d.cfg?.valor||10;
+    document.getElementById('cfgMpLink').value=d.cfg?.mpLink||MP_LINK_DEFAULT;
+    renderAdmJogos(); renderPalpAdmin(); syncResSelect(); updatePendBadge();
+  } else {
+    e.textContent='Senha incorreta.'; e.classList.add('v');
+  }
+}
+function logoutAdm(){
+  st.adm=false;
+  document.getElementById('admLogin').classList.remove('hidden');
+  document.getElementById('admPainel').classList.add('hidden');
+  document.getElementById('admSenha').value='';
+}
+function mudarTab(id,el){
+  document.querySelectorAll('.tab-pane').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  el.classList.add('on');
+}
+
+/* ── CADASTRAR JOGO ── */
+function addJogo(){
+  const tA=document.getElementById('jTA').value.trim();
+  const tB=document.getElementById('jTB').value.trim();
+  if(!tA||!tB){alert('Informe as duas seleções.');return;}
+  const d=load();
+  const id=Math.max(0,...(d.jogos||[]).map(j=>j.id))+1;
+  d.jogos.push({
+    id,timeA:tA,timeB:tB,
+    bandA:document.getElementById('jBA').value.trim()||'🏳️',
+    bandB:document.getElementById('jBB').value.trim()||'🏳️',
+    grupo:document.getElementById('jGrupo').value.trim()||'Copa',
+    data:document.getElementById('jData').value,
+    hora:document.getElementById('jHora').value,
+    status:document.getElementById('jStatus').value,
+    golAOf:null,golBOf:null,criadoEm:new Date().toISOString()
+  });
+  save(d);
+  ['jTA','jTB','jBA','jBB','jGrupo','jData','jHora'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('jStatus').value='aberto';
+  renderJogos(); renderAdmJogos(); syncResSelect(); stats();
+  alert(`${tA} x ${tB} cadastrado com sucesso!`);
+}
+
+function renderAdmJogos(){
+  const d=load();
+  const cont=document.getElementById('admListaJogos');
+  if(!d.jogos?.length){cont.innerHTML='<div class="empty-st"><div>Sem jogos.</div></div>';return;}
+  cont.innerHTML=`<table><thead><tr><th>Jogo</th><th>Grupo</th><th>Data/Hora</th><th>Status</th><th>Palpites</th><th></th></tr></thead><tbody>
+  ${d.jogos.map(j=>{
+    const qtd=(d.palpites||[]).filter(p=>p.jId===j.id).length;
+    return `<tr>
+      <td><strong>${j.bandA} ${j.timeA} × ${j.timeB} ${j.bandB}</strong></td>
+      <td>${j.grupo}</td><td>${fmtData(j.data)} ${j.hora}</td>
+      <td><select onchange="editStatus(${j.id},this.value)" style="font-size:11px;padding:4px 8px;width:auto;font-family:var(--f-body)">
+        <option value="aberto"     ${j.status==='aberto'?'selected':''}>Aberto</option>
+        <option value="encerrado"  ${j.status==='encerrado'?'selected':''}>Encerrado</option>
+        <option value="finalizado" ${j.status==='finalizado'?'selected':''}>Finalizado</option>
+      </select></td>
+      <td>${qtd}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="confAcao('Excluir jogo','${j.timeA} x ${j.timeB} e ${qtd} palpite(s) serão removidos.',()=>delJogo(${j.id}))">✕</button></td>
+    </tr>`;
+  }).join('')}
+  </tbody></table>`;
+}
+
+function editStatus(jId,val){
+  const d=load(); const j=d.jogos.find(x=>x.id===jId);
+  if(j){j.status=val;save(d);renderJogos();renderAdmJogos();}
+}
+function delJogo(jId){
+  const d=load();
+  d.jogos=(d.jogos||[]).filter(j=>j.id!==jId);
+  d.palpites=(d.palpites||[]).filter(p=>p.jId!==jId);
+  save(d);renderJogos();renderAdmJogos();renderPalpites();stats();
+}
+
+/* ── RESULTADO ── */
+function syncResSelect(){
+  const d=load(); const sel=document.getElementById('resJogo');
+  if(!sel) return;
+  sel.innerHTML='<option value="">Selecione o jogo...</option>';
+  (d.jogos||[]).forEach(j=>sel.appendChild(new Option(`${j.timeA} x ${j.timeB} — ${fmtData(j.data)}`,j.id)));
+}
+function onResChange(){
+  const jId=parseInt(document.getElementById('resJogo').value);
+  const ri=document.getElementById('resInfo'), rp=document.getElementById('resPlacarW'), rv=document.getElementById('resVenc');
+  if(!jId){[ri,rp,rv].forEach(e=>e.classList.add('hidden'));return;}
+  const d=load(); const j=d.jogos.find(x=>x.id===jId);
+  if(!j) return;
+  document.getElementById('resBand').textContent=`${j.bandA} × ${j.bandB}`;
+  document.getElementById('resNomes').textContent=`${j.timeA} — ${j.timeB}`;
+  document.getElementById('resLblA').textContent=j.timeA;
+  document.getElementById('resLblB').textContent=j.timeB;
+  document.getElementById('resGA').value=j.golAOf??'';
+  document.getElementById('resGB').value=j.golBOf??'';
+  ri.classList.remove('hidden'); rp.classList.remove('hidden');
+  if(j.status==='finalizado'&&j.golAOf!==null) showVenc(d,j);
+  else rv.classList.add('hidden');
+}
+function salvarResult(){
+  const jId=parseInt(document.getElementById('resJogo').value);
+  if(!jId){alert('Selecione um jogo.');return;}
+  const gA=parseInt(document.getElementById('resGA').value);
+  const gB=parseInt(document.getElementById('resGB').value);
+  if(isNaN(gA)||isNaN(gB)||gA<0||gB<0){alert('Placar inválido.');return;}
+  const d=load(); const j=d.jogos.find(x=>x.id===jId);
+  if(!j) return;
+  j.golAOf=gA; j.golBOf=gB; j.status='finalizado';
+  save(d); renderJogos(); renderAdmJogos(); renderPalpites(); stats(); showVenc(d,j);
+}
+function calcVenc(d,j){ return (d.palpites||[]).filter(p=>(p.status==='ativo'||!p.status)&&p.jId===j.id&&p.golA===j.golAOf&&p.golB===j.golBOf); }
+function showVenc(d,j){
+  const rv=document.getElementById('resVenc'), rc=document.getElementById('resConteudo');
+  const vc=calcVenc(d,j);
+  const tot=(d.palpites||[]).filter(p=>(p.status==='ativo'||!p.status)&&p.jId===j.id).length;
+
+  let h=`<div class="form-card mb-16 tc">
+    <div style="font-family:var(--f-tit);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--prata-esc);margin-bottom:6px">Placar oficial</div>
+    <div style="font-family:var(--f-disp);font-size:56px;color:var(--dourado);line-height:1;text-shadow:0 0 30px rgba(201,162,39,.5)">${j.golAOf} — ${j.golBOf}</div>
+    <div style="font-family:var(--f-tit);font-size:16px;text-transform:uppercase;letter-spacing:1px;margin-top:8px">${j.timeA} × ${j.timeB}</div>
+    <div style="font-size:12px;color:var(--prata-esc);margin-top:8px">${tot} palpite(s) no total</div>
+  </div>`;
+
+  if(!vc.length){
+    h+=`<div class="alerta a-info v">
+      <span class="a-ico">💸</span>
+      <div class="a-body"><strong>Ninguém acertou o placar exato.</strong>O valor fica para a Regional Avaré — rolê, café da manhã ou ação interna.</div>
+    </div>`;
+  } else if(vc.length===1){
+    h+=`<div class="res-dest">
+      <div class="res-trofeu">🏆</div>
+      <div class="res-nome">${vc[0].nome}</div>
+      <div class="res-sub">Acertou o placar exato ${j.golAOf}–${j.golBOf} · WhatsApp: ${vc[0].whats}</div>
+      <div style="margin-top:14px;font-family:var(--f-tit);font-size:9px;letter-spacing:3px;color:var(--prata-esc);text-transform:uppercase">VENCEDOR DO BOLÃO</div>
+    </div>`;
+  } else {
+    h+=`<div class="alerta a-info v mb-16">
+      <span class="a-ico">⚡</span>
+      <div class="a-body"><strong>Empate no placar exato!</strong>${vc.length} irmãos acertaram. A decisão vai para <strong>pergunta sobre o MC</strong>.</div>
+    </div>
+    ${vc.map(v=>`<div class="pal-card venc mb-16">
+      <div class="pal-info"><div class="pal-nome">${v.nome}</div><div class="pal-jogo">${v.whats}</div></div>
+      <div class="pal-pl">${v.golA} – ${v.golB}</div>
+      <span class="venc-tag">🏆 Acertou</span>
+    </div>`).join('')}`;
+  }
+  rc.innerHTML=h; rv.classList.remove('hidden');
+}
+
+/* ── PALPITES ADMIN ── */
+function ativarPalpite(id){
+  const d=load(); const p=(d.palpites||[]).find(x=>x.id===id);
+  if(p){p.status='ativo';save(d);renderPalpAdmin();renderPalpites();stats();updatePendBadge();}
+}
+function updatePendBadge(){
+  const d=load();
+  const n=(d.palpites||[]).filter(p=>p.status==='pendente').length;
+  const b=document.getElementById('tabPendBadge');
+  if(b){b.textContent=n;b.style.display=n>0?'inline-flex':'none';}
+}
+function renderPalpAdmin(){
+  const d=load(); const cont=document.getElementById('admListaPalp');
+  const filt=document.getElementById('admFiltJogo').value;
+  let palp=(d.palpites||[]);
+  if(filt) palp=palp.filter(p=>p.jId==filt);
+  if(!palp.length){cont.innerHTML='<div class="empty-st"><div>Sem palpites.</div></div>';return;}
+
+  const pend=palp.filter(p=>p.status==='pendente').length;
+  const resumo=pend>0?`<div class="alerta a-info v mb-16"><span class="a-ico">⏳</span><div class="a-body"><strong>${pend} palpite(s) aguardando confirmação de pagamento.</strong>Confira seu Mercado Pago e clique em "Ativar".</div></div>`:'';
+
+  cont.innerHTML=resumo+`<table><thead><tr><th>#</th><th>Nome</th><th>WhatsApp</th><th>Jogo</th><th>Palpite</th><th>Status</th><th>Data</th><th></th></tr></thead><tbody>
+  ${palp.map((p,i)=>{
+    const j=(d.jogos||[]).find(x=>x.id===p.jId);
+    const isPend=p.status==='pendente';
+    const stBadge=isPend
+      ?'<span class="s-badge s-pendente" style="font-size:9px;padding:3px 8px">⏳ Pendente</span>'
+      :'<span class="s-badge s-aberto" style="font-size:9px;padding:3px 8px">✓ Ativo</span>';
+    return `<tr style="${isPend?'background:rgba(232,140,0,.04)':''}">
+      <td>${i+1}</td><td><strong>${p.nome}</strong></td><td>${p.whats}</td>
+      <td>${j?`${j.timeA} x ${j.timeB}`:'Removido'}</td>
+      <td><strong style="color:var(--dourado)">${p.golA}–${p.golB}</strong></td>
+      <td>${stBadge}</td>
+      <td style="white-space:nowrap">${fmtDH(p.em)}</td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        ${isPend?`<button class="btn btn-ouro btn-sm" onclick="ativarPalpite(${p.id})">✓ Ativar</button>`:''}
+        <button class="btn btn-danger btn-sm" onclick="delPalp(${p.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join('')}
+  </tbody></table>`;
+}
+function delPalp(id){
+  const d=load();
+  d.palpites=(d.palpites||[]).filter(p=>p.id!==id);
+  save(d); renderPalpites(); renderPalpAdmin(); stats();
+}
+
+/* ── CSV ── */
+function exportCSV(){
+  const d=load();
+  if(!d.palpites?.length){alert('Sem palpites para exportar.');return;}
+  const cab=['Nome','WhatsApp','Jogo','Palpite','Data/Hora'];
+  const rows=d.palpites.map(p=>{
+    const j=(d.jogos||[]).find(x=>x.id===p.jId);
+    return [`"${p.nome}"`,`"${p.whats}"`,`"${j?j.timeA+' x '+j.timeB:'Removido'}"`,`"${p.golA}-${p.golB}"`,`"${fmtDH(p.em)}"`].join(',');
+  });
+  const csv='﻿'+[cab.join(','),...rows].join('\n');
+  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  Object.assign(document.createElement('a'),{href:url,download:'palpites-avare.csv'}).click();
+  URL.revokeObjectURL(url);
+}
+
+/* ── LIMPAR ── */
+function limparPalp(){ const d=load();d.palpites=[];save(d);renderPalpites();renderPalpAdmin();stats(); }
+function resetTudo(){ localStorage.removeItem(KEY);location.reload(); }
+
+/* ── CONFIG PAGAMENTO ── */
+function salvarCfgPgto(){
+  const val =parseInt(document.getElementById('cfgValor').value)||10;
+  const link=(document.getElementById('cfgMpLink').value.trim())||MP_LINK_DEFAULT;
+  const d=load(); d.cfg=d.cfg||{}; d.cfg.valor=val; d.cfg.mpLink=link; save(d);
+}
+
+/* ── CONFIG VISIBILIDADE ── */
+function salvarCfgVis(){
+  const val=document.getElementById('cfgVis').value;
+  const d=load(); d.cfg=d.cfg||{}; d.cfg.vis=val; save(d);
+  if(val==='oculto'&&st.vis) toggleVis();
+  if(val==='visivel'&&!st.vis) toggleVis();
+}
+
+/* ── STATS ── */
+function stats(){
+  const d=load();
+  const ativos=(d.palpites||[]).filter(p=>p.status==='ativo'||!p.status);
+  const parts=[...new Set(ativos.map(p=>norm(p.whats)))];
+  document.getElementById('stJogos').textContent=(d.jogos||[]).length;
+  document.getElementById('stPalp').textContent=ativos.length;
+  document.getElementById('stPart').textContent=parts.length;
+}
+
+/* ── CANVAS FAÍSCAS (mais agressivo) ── */
+function initCanvas(){
+  const cv=document.getElementById('bgCanvas');
+  const ctx=cv.getContext('2d');
+  let W=cv.width=window.innerWidth, H=cv.height=window.innerHeight;
+  window.addEventListener('resize',()=>{ W=cv.width=window.innerWidth; H=cv.height=window.innerHeight; });
+
+  const CORES=['#c9a227','#e84b00','#f0c030','#ff6b1a','#a07818','#ff3300','#ffaa00','#e86000'];
+  class Spark{
+    constructor(){ this.reset(true); }
+    reset(rand=false){
+      this.x=Math.random()*W;
+      this.y=rand? Math.random()*H : H+10;
+      this.vx=(Math.random()-.5)*1.1;
+      this.vy=-(Math.random()*2.2+.5);
+      this.r=Math.random()*2.8+.5;
+      this.a=Math.random()*.65+.2;
+      this.life=rand?Math.floor(Math.random()*220):0;
+      this.max=Math.floor(Math.random()*200+90);
+      this.c=CORES[Math.floor(Math.random()*CORES.length)];
+    }
+    tick(){
+      this.x+=this.vx; this.y+=this.vy; this.vy-=.007; this.life++;
+      this.a*=.9982;
+      if(this.life>this.max||this.y<-10) this.reset();
+    }
+    draw(){
+      ctx.save(); ctx.globalAlpha=this.a;
+      ctx.fillStyle=this.c; ctx.shadowColor=this.c; ctx.shadowBlur=8;
+      ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+  }
+  const sparks=Array.from({length:90},()=>new Spark());
+  (function loop(){ ctx.clearRect(0,0,W,H); sparks.forEach(s=>{s.tick();s.draw();}); requestAnimationFrame(loop); })();
+}
+
+/* ── MÁSCARA TELEFONE ── */
+function initMask(){
+  document.getElementById('fWhats').addEventListener('input',function(){
+    let v=this.value.replace(/\D/g,'').slice(0,11);
+    if(v.length>6) v=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    else if(v.length>2) v=`(${v.slice(0,2)}) ${v.slice(2)}`;
+    else if(v.length>0) v=`(${v}`;
+    this.value=v;
+  });
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!localStorage.getItem(KEY)) save(JSON.parse(JSON.stringify(INICIAL)));
+  const d=load();
+  if(d.cfg?.vis==='oculto'){ st.vis=true; toggleVis(); }
+  renderJogos(); renderPalpites(); stats(); initCanvas(); initMask();
+});
+</script>
+</body>
+</html>

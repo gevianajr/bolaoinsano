@@ -1,0 +1,9 @@
+﻿# Logs internos do Claude Code
+.remember/
+tmp/
+*.log
+last-save.json
+last-save-ts
+autonomous
+logs/
+save-session.pid
