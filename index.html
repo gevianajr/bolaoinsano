@@ -677,6 +677,73 @@ footer strong{color:var(--dourado)}
   border-radius:10px;padding:1px 6px;margin-left:5px;min-width:16px;vertical-align:middle;
 }
 
+/* ═══ DESEMPATE OVERLAY ═══ */
+.dsm-overlay{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(4,3,2,.97);
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;overflow-y:auto;
+}
+.dsm-overlay.off{display:none}
+.dsm-inner{
+  max-width:600px;width:100%;
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px;
+  padding:32px 0;
+}
+.dsm-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 24px;border-radius:2px;
+  background:linear-gradient(135deg,#6a4900,#f0c030,#6a4900);background-size:200% auto;
+  color:#000;font-family:var(--f-tit);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  animation:shimmer 3s linear infinite;
+}
+.dsm-jogo{font-family:var(--f-tit);font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--prata-esc)}
+.dsm-q-label{font-family:var(--f-tit);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--fogo);margin-bottom:6px}
+.dsm-q{
+  font-family:var(--f-tit);font-size:clamp(18px,4vw,28px);font-weight:700;
+  color:var(--branco);letter-spacing:1px;line-height:1.4;max-width:520px;
+  padding:20px 24px;
+  background:rgba(201,162,39,.05);border:1px solid rgba(201,162,39,.2);border-radius:12px;
+}
+.dsm-timer-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.dsm-timer-label{font-family:var(--f-tit);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--prata-esc)}
+.dsm-timer{
+  font-family:var(--f-disp);font-size:clamp(56px,14vw,96px);line-height:1;
+  color:var(--dourado);
+  text-shadow:0 0 40px rgba(201,162,39,.5),0 0 80px rgba(201,162,39,.2);
+  transition:color .5s;
+  font-variant-numeric:tabular-nums;
+}
+.dsm-timer.warn{color:var(--fogo);text-shadow:0 0 40px rgba(232,75,0,.6),0 0 80px rgba(232,75,0,.3);animation:timerPulse 1s ease-in-out infinite}
+@keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.7}}
+.dsm-form-wrap{width:100%;max-width:440px;text-align:left}
+.dsm-form-wrap input{font-size:15px}
+.dsm-obs{font-size:12px;color:var(--prata-esc);margin-top:8px;text-align:center}
+
+.dsm-expired{display:flex;flex-direction:column;align-items:center;gap:14px}
+.dsm-expired-ico{font-size:64px;line-height:1}
+.dsm-expired-msg{font-family:var(--f-disp);font-size:clamp(24px,5vw,40px);color:var(--fogo);text-shadow:0 0 30px rgba(232,75,0,.4)}
+
+/* ═══ TRANSPARÊNCIA ═══ */
+.trans-section{padding:48px 0;background:rgba(0,0,0,.3)}
+.trans-card{
+  background:var(--preto-card);
+  border:1px solid rgba(201,162,39,.2);
+  border-radius:12px;padding:24px;
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;
+}
+.trans-ico{font-size:32px;line-height:1}
+.trans-info{}
+.trans-jogo{font-family:var(--f-tit);font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--branco)}
+.trans-det{font-size:12px;color:var(--prata-esc);margin-top:3px}
+.trans-valor{font-family:var(--f-disp);font-size:22px;color:var(--dourado);text-align:right;white-space:nowrap}
+.trans-destino{font-size:10px;color:var(--prata-esc);letter-spacing:2px;text-transform:uppercase;text-align:right}
+@media(max-width:480px){.trans-card{grid-template-columns:1fr;text-align:center}.trans-valor,.trans-destino{text-align:center}}
+
+/* ═══ DESEMPATE ADMIN PAINEL ═══ */
+.dsm-painel{margin-top:20px;padding:20px;background:rgba(201,162,39,.04);border:1px solid rgba(201,162,39,.2);border-radius:12px}
+.dsm-painel .adm-sec{border-color:rgba(201,162,39,.2)}
+
 /* ═══ UTILS ═══ */
 .hidden{display:none!important}
 .mt-12{margin-top:12px}.mt-16{margin-top:16px}.mt-20{margin-top:20px}.mt-24{margin-top:24px}
@@ -1175,6 +1242,54 @@ footer strong{color:var(--dourado)}
           <div class="adm-sec">Resultado do Bolão</div>
           <div id="resConteudo"></div>
         </div>
+
+        <!-- Painel de desempate (aparece automaticamente quando há empate) -->
+        <div id="resDsmPainel" class="hidden">
+          <div class="dsm-painel">
+            <div class="adm-sec" style="background:none;padding:0 0 12px 0;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--fogo)">⚡ Desempate — Pergunta sobre o MC</div>
+            <div class="form-card">
+              <div class="fg">
+                <label>Pergunta para os empatados</label>
+                <textarea id="dsmPergunta" rows="3" placeholder="Ex: Qual o nome do fundador do INSANOS MC Regional Avaré?"
+                          style="resize:vertical;min-height:80px"></textarea>
+              </div>
+              <div class="f-grid">
+                <div class="fg">
+                  <label>Tempo para resposta (segundos)</label>
+                  <input type="number" id="dsmTempo" value="60" min="10" max="3600"
+                         style="font-size:22px;text-align:center;font-family:var(--f-disp)">
+                </div>
+                <div class="fg">
+                  <label>Resposta correta (só você vê)</label>
+                  <input type="text" id="dsmResposta" placeholder="A resposta certa é...">
+                </div>
+              </div>
+              <button class="btn btn-ouro mt-8" onclick="gerarLinkDesempate()">🔗 Gerar link de desempate</button>
+            </div>
+            <div id="dsmLinkBox" class="hidden mt-16">
+              <div class="adm-sec" style="background:none;padding:0 0 10px 0;font-size:10px;letter-spacing:2px">Link gerado — envie para os empatados</div>
+              <div class="form-card" style="word-break:break-all;font-size:11px;font-family:monospace;background:rgba(0,0,0,.5);padding:14px;color:var(--dourado)" id="dsmLinkTexto"></div>
+              <button class="btn btn-ouro mt-10" onclick="copyDesempateLink(this)">📋 Copiar link</button>
+              <div class="mt-20">
+                <div class="adm-sec" style="background:none;padding:0 0 10px 0;font-size:10px;letter-spacing:2px">Registrar transparência (ninguém acertou)</div>
+                <div class="form-card">
+                  <div class="f-grid">
+                    <div class="fg">
+                      <label>Valor total arrecadado (R$)</label>
+                      <input type="number" id="dsmValorTrans" min="0" step="0.01" placeholder="100.00"
+                             style="font-size:20px;text-align:center;font-family:var(--f-disp)">
+                    </div>
+                    <div class="fg">
+                      <label>Observação (opcional)</label>
+                      <input type="text" id="dsmObsTrans" placeholder="Ex: Usado no café da manhã">
+                    </div>
+                  </div>
+                  <button class="btn btn-ghost mt-8" onclick="registrarTransparencia()">💰 Registrar — valor para a Regional</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Tab: Palpites admin -->
@@ -1214,6 +1329,16 @@ footer strong{color:var(--dourado)}
           </div>
         </div>
 
+        <div class="adm-sec">WhatsApp do Admin (Desempate)</div>
+        <div class="form-card mb-24">
+          <div class="fg mb-0">
+            <label>Número para receber respostas de desempate</label>
+            <input type="tel" id="cfgWhatsAdm" placeholder="(17) 9 9999-9999"
+                   oninput="maskWhatsAdmCfg(this)" onblur="salvarCfgDados()">
+            <div style="font-size:11px;color:var(--prata-esc);margin-top:4px">Com DDD, sem o +55. Ex: 17999991234</div>
+          </div>
+        </div>
+
         <div class="adm-sec">Visibilidade</div>
         <div class="form-card mb-24">
           <div class="fg mb-0">
@@ -1231,6 +1356,71 @@ footer strong{color:var(--dourado)}
           <button class="btn btn-danger" onclick="confAcao('Resetar tudo','Remove TODOS os jogos e palpites. Sem volta.',resetTudo)">⚠ Resetar tudo</button>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ DESEMPATE OVERLAY (ativado pelo hash da URL) ════════ -->
+<div class="dsm-overlay off" id="dsmOverlay">
+  <div class="dsm-inner">
+    <!-- Estado: ativo (timer rodando) -->
+    <div id="dsmAtivo">
+      <div class="dsm-badge">⚡ DESEMPATE INSANOS MC</div>
+      <div class="dsm-jogo" id="dsmJogoNome"></div>
+      <div>
+        <div class="dsm-q-label">Pergunta sobre o MC</div>
+        <div class="dsm-q" id="dsmQTexto"></div>
+      </div>
+      <div class="dsm-timer-wrap">
+        <div class="dsm-timer-label">tempo restante</div>
+        <div class="dsm-timer" id="dsmTimer">00:00</div>
+      </div>
+      <div class="dsm-form-wrap">
+        <div class="fg">
+          <label>Seu nome (apelido de irmão)</label>
+          <input type="text" id="dsmNome" placeholder="Seu nome...">
+        </div>
+        <div class="fg mt-12">
+          <label>Sua resposta</label>
+          <input type="text" id="dsmRespInput" placeholder="Digite a resposta aqui...">
+        </div>
+        <button class="btn btn-ouro mt-16" style="width:100%;font-size:16px" onclick="enviarResposta()">
+          📲 Responder via WhatsApp
+        </button>
+        <div class="dsm-obs">
+          Sua resposta será enviada diretamente ao admin pelo WhatsApp.<br>
+          Quem responder <strong>certo primeiro</strong> leva o prêmio!
+        </div>
+      </div>
+    </div>
+    <!-- Estado: expirado -->
+    <div id="dsmExpirado" class="hidden">
+      <div class="dsm-expired">
+        <div class="dsm-expired-ico">⏳</div>
+        <div class="dsm-expired-msg">Tempo esgotado!</div>
+        <div id="dsmExpJogo" style="font-family:var(--f-tit);font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--prata-esc);margin-bottom:12px"></div>
+        <div style="font-size:15px;color:var(--branco);max-width:420px;text-align:center;line-height:1.7">
+          Ninguém respondeu corretamente no tempo.<br>
+          O valor arrecadado foi revertido para a<br>
+          <strong style="color:var(--dourado)">Regional Avaré</strong> — rolê, café da manhã ou ação interna.
+        </div>
+        <div id="dsmExpValor" style="font-family:var(--f-disp);font-size:56px;color:var(--dourado);text-shadow:0 0 30px rgba(201,162,39,.4);margin-top:8px"></div>
+        <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--prata-esc)">PARA A REGIONAL AVARÉ</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ TRANSPARÊNCIA (público) ════════ -->
+<section class="trans-section" id="secTransparencia" style="display:none">
+  <div class="container">
+    <div class="sec-label">Transparência</div>
+    <h2 class="sec-tit" style="margin-bottom:12px">Valores para a Regional</h2>
+    <p style="color:var(--prata-esc);font-size:13px;max-width:500px;margin:0 auto 32px;text-align:center;line-height:1.6">
+      Quando ninguém acerta no desempate, o valor vai direto para a Regional Avaré.<br>Todos os registros são públicos.
+    </p>
+    <div id="transLista" style="display:flex;flex-direction:column;gap:12px;max-width:700px;margin:0 auto">
+      <div class="empty-st" id="transVazio"><div>Nenhum registro de transparência ainda.</div></div>
     </div>
   </div>
 </section>
@@ -1577,6 +1767,8 @@ function loginAdm(){
     document.getElementById('cfgVis').value=d.cfg?.vis||'visivel';
     document.getElementById('cfgValor').value=d.cfg?.valor||10;
     document.getElementById('cfgMpLink').value=d.cfg?.mpLink||MP_LINK_DEFAULT;
+    const wa=d.cfg?.whatsAdm||'';
+    document.getElementById('cfgWhatsAdm').value=wa?fmtWhatsMask(wa):'';
     renderAdmJogos(); renderPalpAdmin(); syncResSelect(); updatePendBadge();
   } else {
     e.textContent='Senha incorreta.'; e.classList.add('v');
@@ -1661,8 +1853,8 @@ function syncResSelect(){
 }
 function onResChange(){
   const jId=parseInt(document.getElementById('resJogo').value);
-  const ri=document.getElementById('resInfo'), rp=document.getElementById('resPlacarW'), rv=document.getElementById('resVenc');
-  if(!jId){[ri,rp,rv].forEach(e=>e.classList.add('hidden'));return;}
+  const ri=document.getElementById('resInfo'), rp=document.getElementById('resPlacarW'), rv=document.getElementById('resVenc'), rdp=document.getElementById('resDsmPainel');
+  if(!jId){[ri,rp,rv,rdp].forEach(e=>e?.classList.add('hidden'));return;}
   const d=load(); const j=d.jogos.find(x=>x.id===jId);
   if(!j) return;
   document.getElementById('resBand').textContent=`${j.bandA} × ${j.bandB}`;
@@ -1673,7 +1865,7 @@ function onResChange(){
   document.getElementById('resGB').value=j.golBOf??'';
   ri.classList.remove('hidden'); rp.classList.remove('hidden');
   if(j.status==='finalizado'&&j.golAOf!==null) showVenc(d,j);
-  else rv.classList.add('hidden');
+  else { rv?.classList.add('hidden'); rdp?.classList.add('hidden'); }
 }
 function salvarResult(){
   const jId=parseInt(document.getElementById('resJogo').value);
@@ -1699,11 +1891,13 @@ function showVenc(d,j){
     <div style="font-size:12px;color:var(--prata-esc);margin-top:8px">${tot} palpite(s) no total</div>
   </div>`;
 
+  const dp=document.getElementById('resDsmPainel');
   if(!vc.length){
     h+=`<div class="alerta a-info v">
       <span class="a-ico">💸</span>
       <div class="a-body"><strong>Ninguém acertou o placar exato.</strong>O valor fica para a Regional Avaré — rolê, café da manhã ou ação interna.</div>
     </div>`;
+    dp?.classList.add('hidden');
   } else if(vc.length===1){
     h+=`<div class="res-dest">
       <div class="res-trofeu">🏆</div>
@@ -1711,16 +1905,22 @@ function showVenc(d,j){
       <div class="res-sub">Acertou o placar exato ${j.golAOf}–${j.golBOf} · WhatsApp: ${vc[0].whats}</div>
       <div style="margin-top:14px;font-family:var(--f-tit);font-size:9px;letter-spacing:3px;color:var(--prata-esc);text-transform:uppercase">VENCEDOR DO BOLÃO</div>
     </div>`;
+    dp?.classList.add('hidden');
   } else {
     h+=`<div class="alerta a-info v mb-16">
       <span class="a-ico">⚡</span>
-      <div class="a-body"><strong>Empate no placar exato!</strong>${vc.length} irmãos acertaram. A decisão vai para <strong>pergunta sobre o MC</strong>.</div>
+      <div class="a-body"><strong>Empate no placar exato!</strong>${vc.length} irmãos acertaram. Use o painel abaixo para criar a pergunta de desempate.</div>
     </div>
     ${vc.map(v=>`<div class="pal-card venc mb-16">
       <div class="pal-info"><div class="pal-nome">${v.nome}</div><div class="pal-jogo">${v.whats}</div></div>
       <div class="pal-pl">${v.golA} – ${v.golB}</div>
       <span class="venc-tag">🏆 Acertou</span>
     </div>`).join('')}`;
+    dp?.classList.remove('hidden');
+    // Pre-fill valor total para transparência
+    const vTot=(d.cfg?.valor||10)*tot;
+    const vTF=document.getElementById('dsmValorTrans');
+    if(vTF&&!vTF.value) vTF.value=vTot;
   }
   rc.innerHTML=h; rv.classList.remove('hidden');
 }
@@ -1798,6 +1998,23 @@ function salvarCfgPgto(){
   const link=(document.getElementById('cfgMpLink').value.trim())||MP_LINK_DEFAULT;
   const d=load(); d.cfg=d.cfg||{}; d.cfg.valor=val; d.cfg.mpLink=link; save(d);
 }
+function salvarCfgDados(){
+  const wa=document.getElementById('cfgWhatsAdm').value.replace(/\D/g,'');
+  const d=load(); d.cfg=d.cfg||{}; d.cfg.whatsAdm=wa; save(d);
+}
+function maskWhatsAdmCfg(el){
+  let v=el.value.replace(/\D/g,'').slice(0,11);
+  if(v.length>6) v=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+  else if(v.length>2) v=`(${v.slice(0,2)}) ${v.slice(2)}`;
+  else if(v.length>0) v=`(${v}`;
+  el.value=v;
+}
+function fmtWhatsMask(num){
+  const v=(num||'').replace(/\D/g,'').slice(0,11);
+  if(v.length>6) return `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+  if(v.length>2) return `(${v.slice(0,2)}) ${v.slice(2)}`;
+  return v?`(${v}`:v;
+}
 
 /* ── CONFIG VISIBILIDADE ── */
 function salvarCfgVis(){
@@ -1865,12 +2082,159 @@ function initMask(){
   });
 }
 
+/* ── DESEMPATE ── */
+let _dsmIv=null;
+
+function gerarLinkDesempate(){
+  const d=load();
+  const q=(document.getElementById('dsmPergunta').value||'').trim();
+  const t=parseInt(document.getElementById('dsmTempo').value)||60;
+  const r=(document.getElementById('dsmResposta').value||'').trim();
+  if(!q){alert('Escreva a pergunta!');return;}
+  if(!r){alert('Escreva a resposta correta!');return;}
+  const adm=(d.cfg?.whatsAdm||'').replace(/\D/g,'');
+  if(!adm){alert('Configure o WhatsApp do admin na aba Dados antes de gerar o link.');return;}
+  const jId=parseInt(document.getElementById('resJogo').value);
+  const j=(d.jogos||[]).find(x=>x.id===jId);
+  const tot=(d.palpites||[]).filter(p=>(p.status==='ativo'||!p.status)&&p.jId===jId).length;
+  const endTs=Date.now()+(t*1000);
+  const payload={q,r,end:endTs,jogo:j?`${j.timeA} × ${j.timeB}`:'Desempate',valor:(d.cfg?.valor||10)*tot,adm};
+  const enc=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+  const url=`${location.origin}${location.pathname}#desempate=${enc}`;
+  document.getElementById('dsmLinkTexto').textContent=url;
+  document.getElementById('dsmLinkBox').classList.remove('hidden');
+  const vTF=document.getElementById('dsmValorTrans');
+  if(vTF) vTF.value=payload.valor;
+}
+
+function copyDesempateLink(){
+  const txt=document.getElementById('dsmLinkTexto').textContent;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const b=event.currentTarget; const o=b.textContent;
+    b.textContent='✓ Copiado!'; setTimeout(()=>b.textContent=o,2000);
+  });
+}
+
+function checkDesempateHash(){
+  const hash=location.hash;
+  if(!hash.startsWith('#desempate=')) return;
+  const enc=hash.slice('#desempate='.length);
+  try{
+    const data=JSON.parse(decodeURIComponent(escape(atob(enc))));
+    showDesempatePage(data);
+  } catch(e){ console.error('Hash inválido',e); }
+}
+
+function showDesempatePage(data){
+  const ov=document.getElementById('dsmOverlay');
+  ov.classList.remove('off');
+  document.getElementById('dsmAtivo').classList.remove('hidden');
+  document.getElementById('dsmExpirado').classList.add('hidden');
+  document.getElementById('dsmJogoNome').textContent=data.jogo||'Desempate';
+  document.getElementById('dsmQTexto').textContent=data.q;
+  document.getElementById('dsmExpJogo').textContent=data.jogo||'';
+  const val=parseFloat(data.valor)||0;
+  document.getElementById('dsmExpValor').textContent=`R$ ${val.toLocaleString('pt-BR',{minimumFractionDigits:2})}`;
+  iniciarContagem(data.end);
+}
+
+function iniciarContagem(endTs){
+  if(_dsmIv) clearInterval(_dsmIv);
+  function tick(){
+    const rem=Math.max(0,endTs-Date.now());
+    const m=Math.floor(rem/60000), s=Math.floor((rem%60000)/1000);
+    const el=document.getElementById('dsmTimer');
+    if(el){
+      el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      if(rem<=10000) el.classList.add('warn'); else el.classList.remove('warn');
+    }
+    if(rem===0){
+      clearInterval(_dsmIv);
+      document.getElementById('dsmAtivo').classList.add('hidden');
+      document.getElementById('dsmExpirado').classList.remove('hidden');
+    }
+  }
+  tick();
+  _dsmIv=setInterval(tick,500);
+}
+
+function enviarResposta(){
+  const hash=location.hash;
+  if(!hash.startsWith('#desempate=')) return;
+  let data;
+  try{ data=JSON.parse(decodeURIComponent(escape(atob(hash.slice('#desempate='.length))))); }
+  catch(e){ return; }
+  const nome=(document.getElementById('dsmNome').value||'').trim();
+  const resp=(document.getElementById('dsmRespInput').value||'').trim();
+  if(!nome){alert('Escreva seu nome!');return;}
+  if(!resp){alert('Escreva a resposta!');return;}
+  if(Date.now()>data.end){alert('O tempo acabou! Não é mais possível responder.');return;}
+  const msg=`⚡ DESEMPATE BOLÃO INSANOS\n\nJogo: ${data.jogo}\nNome: ${nome}\nResposta: ${resp}\n\n⏰ ${new Date().toLocaleTimeString('pt-BR')}`;
+  const num=(data.adm||'').replace(/\D/g,'');
+  window.open(`https://wa.me/55${num}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+/* ── TRANSPARÊNCIA ── */
+function registrarTransparencia(){
+  const val=parseFloat(document.getElementById('dsmValorTrans').value);
+  const obs=(document.getElementById('dsmObsTrans').value||'').trim();
+  if(isNaN(val)||val<=0){alert('Informe o valor arrecadado.');return;}
+  const d=load();
+  d.transparencia=d.transparencia||[];
+  const jId=parseInt(document.getElementById('resJogo').value);
+  const j=(d.jogos||[]).find(x=>x.id===jId);
+  d.transparencia.push({
+    id:Date.now(),
+    jogo:j?`${j.timeA} × ${j.timeB}`:'Jogo',
+    placar:j&&j.golAOf!==null?`${j.golAOf}–${j.golBOf}`:'',
+    valor:val, obs,
+    em:new Date().toISOString()
+  });
+  save(d); renderTransparencia();
+  alert('Registro salvo! Visível na seção de Transparência abaixo.');
+}
+
+function renderTransparencia(){
+  const d=load();
+  const lista=d.transparencia||[];
+  const cont=document.getElementById('transLista');
+  const vazio=document.getElementById('transVazio');
+  const sec=document.getElementById('secTransparencia');
+  if(!cont) return;
+  cont.querySelectorAll('.trans-card').forEach(el=>el.remove());
+  if(!lista.length){
+    vazio?.classList.remove('hidden');
+    sec?.style.setProperty('display','none');
+    return;
+  }
+  vazio?.classList.add('hidden');
+  sec?.style.removeProperty('display');
+  lista.slice().reverse().forEach(rec=>{
+    const card=document.createElement('div');
+    card.className='trans-card';
+    const v=parseFloat(rec.valor)||0;
+    card.innerHTML=`
+      <div class="trans-ico">💰</div>
+      <div class="trans-info">
+        <div class="trans-jogo">${rec.jogo}${rec.placar?` · ${rec.placar}`:''}</div>
+        <div class="trans-det">${fmtDH(rec.em)}${rec.obs?` · ${rec.obs}`:''}</div>
+      </div>
+      <div>
+        <div class="trans-valor">R$ ${v.toLocaleString('pt-BR',{minimumFractionDigits:2})}</div>
+        <div class="trans-destino">→ Regional Avaré</div>
+      </div>`;
+    cont.appendChild(card);
+  });
+}
+
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded',()=>{
   if(!localStorage.getItem(KEY)) save(JSON.parse(JSON.stringify(INICIAL)));
   const d=load();
   if(d.cfg?.vis==='oculto'){ st.vis=true; toggleVis(); }
   renderJogos(); renderPalpites(); stats(); initCanvas(); initMask();
+  renderTransparencia();
+  checkDesempateHash();
 });
 </script>
 </body>
