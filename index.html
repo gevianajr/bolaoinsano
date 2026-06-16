@@ -6,6 +6,9 @@
 <title>Bolão Regional Avaré — INSANOS MC</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Firebase SDK (compat v9) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <style>
 /* ═══════════════════════════════════════════════════
    BOLÃO REGIONAL AVARÉ — INSANOS MC  ·  v3 FODA
@@ -773,6 +776,15 @@ footer strong{color:var(--dourado)}
 </head>
 <body>
 
+<!-- Loading inicial Firebase -->
+<div id="fbLoading" style="position:fixed;inset:0;z-index:9999;background:#080605;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px">
+  <img src="assets/logo-regional-avare.png" alt="Logo" style="width:72px;opacity:.8;animation:logoPulse 1.5s ease-in-out infinite"
+       onerror="this.style.display='none'">
+  <div style="font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#c9a227;opacity:.7">
+    Conectando...
+  </div>
+</div>
+
 <canvas id="bgCanvas"></canvas>
 
 <!-- ════════ NAVBAR ════════ -->
@@ -1479,20 +1491,78 @@ const INICIAL = {
 const st = { vis:true, adm:false };
 let _tmpPalp = null;
 
-/* ── PERSISTÊNCIA ── */
-function load(){
-  try{
-    const r=localStorage.getItem(KEY);
-    if(!r) return JSON.parse(JSON.stringify(INICIAL));
-    const d=JSON.parse(r);
-    if(!d.cfg) d.cfg={vis:'visivel'};
-    /* migração: corrige data do jogo Brasil x Haiti de 2025 para 2026 */
-    const j1=(d.jogos||[]).find(j=>j.id===1&&j.data==='2025-06-19');
-    if(j1){j1.data='2026-06-19';save(d);}
-    return d;
-  }catch{ return JSON.parse(JSON.stringify(INICIAL)); }
+/* ── FIREBASE CONFIG ─────────────────────────────────────────────────────
+   Cole aqui o bloco firebaseConfig do seu projeto Firebase.
+   Acesse: console.firebase.google.com → Configurações do projeto → Seus apps
+   ──────────────────────────────────────────────────────────────────────── */
+const FIREBASE_CONFIG = {
+  apiKey:            "COLE_AQUI",
+  authDomain:        "COLE_AQUI",
+  databaseURL:       "COLE_AQUI",
+  projectId:         "COLE_AQUI",
+  storageBucket:     "COLE_AQUI",
+  messagingSenderId: "COLE_AQUI",
+  appId:             "COLE_AQUI"
+};
+
+/* ── PERSISTÊNCIA (Firebase Realtime Database + fallback localStorage) ── */
+let _state = null;  // cache em memória — load() é síncrono graças a ele
+let _fbRef  = null; // referência do Firebase
+let _fbOk   = false;
+
+function _migrar(d){
+  if(!d.cfg) d.cfg={vis:'visivel'};
+  const j1=(d.jogos||[]).find(j=>j.id===1&&j.data==='2025-06-19');
+  if(j1) j1.data='2026-06-19';
+  return d;
 }
-function save(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){ console.error(e); } }
+
+async function initFirebase(){
+  try{
+    firebase.initializeApp(FIREBASE_CONFIG);
+    const db=firebase.database();
+    _fbRef=db.ref(KEY);
+
+    // Carrega estado inicial do Firebase
+    const snap=await _fbRef.get();
+    if(snap.exists()){
+      _state=_migrar(snap.val());
+    } else {
+      _state=JSON.parse(JSON.stringify(INICIAL));
+      await _fbRef.set(_state);
+    }
+    _fbOk=true;
+
+    // Listener em tempo real: atualiza UI quando outro device escreve
+    _fbRef.on('value',(s)=>{
+      if(!s.exists()) return;
+      _state=s.val();
+      // Atualiza telas visíveis
+      renderJogos(); renderPalpites(); stats(); updatePendBadge(); renderTransparencia();
+      if(st.adm){ renderAdmJogos(); renderPalpAdmin(); syncResSelect(); }
+    });
+
+  } catch(err){
+    console.error('Firebase indisponível, usando localStorage.',err);
+    // Fallback: carrega do localStorage
+    try{
+      const r=localStorage.getItem(KEY);
+      _state=r ? _migrar(JSON.parse(r)) : JSON.parse(JSON.stringify(INICIAL));
+    } catch{ _state=JSON.parse(JSON.stringify(INICIAL)); }
+  }
+}
+
+function load(){ return _state || JSON.parse(JSON.stringify(INICIAL)); }
+
+function save(d){
+  _state=d;
+  // Salva no Firebase (assíncrono, sem bloquear UI)
+  if(_fbOk && _fbRef){
+    _fbRef.set(d).catch(e=>console.error('Firebase write error',e));
+  }
+  // Mantém cópia local como backup offline
+  try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){}
+}
 
 /* ── UTILS ── */
 function ir(sel){ document.querySelector(sel)?.scrollIntoView({behavior:'smooth',block:'start'}); }
@@ -2228,8 +2298,12 @@ function renderTransparencia(){
 }
 
 /* ── INIT ── */
-document.addEventListener('DOMContentLoaded',()=>{
-  if(!localStorage.getItem(KEY)) save(JSON.parse(JSON.stringify(INICIAL)));
+document.addEventListener('DOMContentLoaded', async ()=>{
+  await initFirebase();
+
+  const loadEl=document.getElementById('fbLoading');
+  if(loadEl) loadEl.style.display='none';
+
   const d=load();
   if(d.cfg?.vis==='oculto'){ st.vis=true; toggleVis(); }
   renderJogos(); renderPalpites(); stats(); initCanvas(); initMask();
